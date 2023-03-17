@@ -19,6 +19,9 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
+    "paths": {
+      "models/*": ["src/models/*"]
+    },
     "outDir": "./dist"
   },
   "exclude": ["node_modules"],

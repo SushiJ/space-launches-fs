@@ -2,7 +2,8 @@ const URL = "http://localhost:3000";
 
 async function httpGetPlanets() {
   const response = await fetch(`${URL}/planets`);
-  return await response.json();
+  const result = await response.json();
+  return result;
 }
 
 async function httpGetLaunches() {

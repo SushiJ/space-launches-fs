@@ -65,7 +65,7 @@ export function Form(props: any) {
         <select
           id="planet-selector"
           name="planet-selector"
-          class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 focus:ring-2 focus:ring-emerald-400 text-sm leading-6"
+          class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 focus:ring-2 focus:ring-emerald-400 text-md leading-6"
         >
           {selectorBody}
         </select>

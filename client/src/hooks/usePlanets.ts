@@ -6,9 +6,9 @@ function usePlanets() {
   const [planets, savePlanets] = useState([]);
 
   const getPlanets = useCallback(async () => {
-    const fetchedPlanets = await httpGetPlanets();
-    /* @ts-expect-error */
-    savePlanets(fetchedPlanets);
+    const fetchedPlanets: any = await httpGetPlanets();
+    // /* @ts-expect-error */
+    savePlanets(fetchedPlanets["habitable"]);
   }, []);
 
   useEffect(() => {

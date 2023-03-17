@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-
-const planets: any = [];
+import { habitable, planetNames } from "../../models/planets";
 
 export function getAllPlanets(_req: Request, res: Response) {
-  return res.status(200).json(planets);
+  return res.status(200).json({ habitable, planetNames });
 }
