@@ -8,7 +8,6 @@ function useLaunches() {
 
   const getLaunches = useCallback(async () => {
     const fetchedLaunches = await httpGetLaunches();
-    /* @ts-expect-error */
     saveLaunches(fetchedLaunches);
   }, []);
 

@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import router from "./routes/planets/planets";
+import { router } from "./routes";
 import cors from "cors";
 import { parseCsv } from "./models/planets";
 
@@ -12,7 +12,8 @@ app.use(
 );
 
 app.use(express.json());
-app.use(router);
+app.use(router.planetsRouter);
+app.use(router.launchesRouter);
 app.get("/", (_req: Request, res: Response) => {
   res.sendStatus(200);
 });

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse";
-import { PlanetData } from "./types";
+import { PlanetData } from "../types/types";
 
 export const habitable: PlanetData[] = [];
 export let planetNames: Array<string> = [];

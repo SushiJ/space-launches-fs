@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { getAllPlanets } from "./planets.controller";
 
-const router = Router();
+const planetsRouter = Router();
 
-router.get("/planets", getAllPlanets);
+planetsRouter.get("/planets", getAllPlanets);
 
-export default router;
+export default planetsRouter;
