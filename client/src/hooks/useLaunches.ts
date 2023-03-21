@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "preact/hooks";
+import { Launch } from "../types/types";
 
 import { httpGetLaunches, httpSubmitLaunch, httpAbortLaunch } from "./requests";
 
 function useLaunches() {
-  const [launches, saveLaunches] = useState([]);
+  const [launches, saveLaunches] = useState<Array<Launch> | []>([]);
   const [isPendingLaunch, setPendingLaunch] = useState(false);
 
   const getLaunches = useCallback(async () => {
@@ -22,15 +23,15 @@ function useLaunches() {
       const data = new FormData(e.target);
       /* @ts-expect-error */
       const launchDate = new Date(data.get("launch-date"));
-      const mission = data.get("mission-name");
-      const rocket = data.get("rocket-name");
-      const target = data.get("planets-selector");
+      const mission = data.get("mission-name") as string;
+      const rocket = data.get("rocket-name") as string;
+      const destination = data.get("planets-selector") as string;
 
       const response = await httpSubmitLaunch({
         launchDate,
         mission,
         rocket,
-        target,
+        destination,
       });
 
       // TODO: Set success based on response.

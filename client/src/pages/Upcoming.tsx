@@ -1,5 +1,33 @@
+import { useMemo } from "preact/hooks";
 import Layout from "../components/Layout";
+import useLaunches from "../hooks/useLaunches";
+
 function UpcomingPage() {
+  const { launches, abortLaunch } = useLaunches();
+  const tableBody = useMemo(() => {
+    return launches
+      ?.filter((launch) => launch.upcoming)
+      .map((launch) => {
+        return (
+          <tr class="" key={String(launch.flightNumber)}>
+            <td class="">
+              <button
+                className=""
+                onClick={() => abortLaunch(launch.flightNumber)}
+              >
+                ✖
+              </button>
+            </td>
+            <td class="">{launch.flightNumber}</td>
+            <td>{new Date(String(launch.launchDate)).toDateString()}</td>
+            <td>{launch.mission}</td>
+            <td>{launch.rocket}</td>
+            <td>{launch.destination}</td>
+          </tr>
+        );
+      });
+  }, [launches, abortLaunch]);
+
   return (
     <Layout>
       <div class="text-gray-100 border-emerald-400 h-auto border-[1px] rounded-sm text-xl p-8">
@@ -12,15 +40,18 @@ function UpcomingPage() {
           {/* TODO: Replace the X with an icon  */}
           Warning! Clicking on the X aborts the mission
         </p>
-        <table class="mt-2 w-full">
-          <tr class="grid grid-cols-5 gap-1 text-end">
-            <td class="w-auto">No.</td>
-            <td>Date</td>
-            <td>Misson</td>
-            <td>Rocket</td>
-            <td>Destination</td>
-          </tr>
-          <hr />
+        <table class="mt-2 w-full table-auto text-center">
+          <thead class="border-b-gray-400 border-b-[1px] pb-4 mb-4">
+            <tr class="">
+              <th class="">&nbsp;</th>
+              <th class="">No.</th>
+              <th>Date</th>
+              <th>Misson</th>
+              <th>Rocket</th>
+              <th>Destination</th>
+            </tr>
+          </thead>
+          <tbody>{tableBody}</tbody>
         </table>
       </div>
     </Layout>

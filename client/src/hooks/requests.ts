@@ -1,3 +1,5 @@
+import { Launch, SubmitLaunch } from "../types/types";
+
 const URL = "http://localhost:3000";
 
 async function httpGetPlanets() {
@@ -8,11 +10,11 @@ async function httpGetPlanets() {
 
 async function httpGetLaunches() {
   const response = await fetch(`${URL}/launches`);
-  const result = await response.json();
+  const result = (await response.json()) as Array<Launch>;
   return result.sort((a: any, b: any) => a.flightNumber - b.flightNumber);
 }
 
-async function httpSubmitLaunch(launch: unknown) {
+async function httpSubmitLaunch(launch: SubmitLaunch) {
   // TODO: Once API is ready.
   // Submit given launch data to launch system.
 }
