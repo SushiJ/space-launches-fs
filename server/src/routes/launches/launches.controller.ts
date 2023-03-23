@@ -8,5 +8,5 @@ export function httpGetAllLaunches(_req: Request, res: Response) {
 export function httpPostNewLaunches(req: Request, res: Response) {
   const newLaunch = req.body as LaunchRequest;
   addNewLaunch(newLaunch);
-  return res.status(201).json({ message: "Success" });
+  return res.status(201).json(newLaunch);
 }
