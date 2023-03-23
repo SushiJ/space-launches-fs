@@ -24,4 +24,6 @@ const launches = new Map<number, Launch>();
 
 launches.set(launch.flightNumber, launch);
 
-export default launches;
+export function getAllLaunches() {
+  return Array.from(launches.values());
+}
