@@ -1,3 +1,19 @@
+export type Launch = {
+  flightNumber: number;
+  mission: string;
+  rocket: string;
+  launchDate: Date;
+  destination: string;
+  customer: Array<string>;
+  upcoming: boolean;
+  success: boolean;
+};
+export type LaunchRequest = {
+  mission: string;
+  rocket: string;
+  launchDate: Date;
+  destination: string;
+};
 export interface PlanetData {
   kepid: string;
   kepoi_name: string;

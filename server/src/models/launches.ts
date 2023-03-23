@@ -1,13 +1,6 @@
-type Launch = {
-  flightNumber: number;
-  mission: string;
-  rocket: string;
-  launchDate: Date;
-  destination: string;
-  customer: Array<string>;
-  upcoming: boolean;
-  success: boolean;
-};
+import { Launch, LaunchRequest } from "../types";
+
+let latestFlightNumber = 100;
 
 const launch = {
   flightNumber: 100,
@@ -26,4 +19,17 @@ launches.set(launch.flightNumber, launch);
 
 export function getAllLaunches() {
   return Array.from(launches.values());
+}
+
+export function addNewLaunch(launch: LaunchRequest) {
+  latestFlightNumber++;
+  launches.set(
+    latestFlightNumber,
+    Object.assign(launch, {
+      flightNumber: latestFlightNumber,
+      customer: ["abc", "xyz"],
+      upcoming: true,
+      success: true,
+    })
+  );
 }
