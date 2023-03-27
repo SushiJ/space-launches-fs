@@ -33,3 +33,16 @@ export function addNewLaunch(launch: LaunchRequest) {
     })
   );
 }
+export function findLaunchesById(id: number) {
+  return launches.has(id);
+}
+function getLaunchById(id: number) {
+  return launches.get(id);
+}
+
+export function AboutLaunchById(id: number) {
+  const launch = getLaunchById(id);
+  launch!.success = false;
+  launch!.upcoming = false;
+  return launch;
+}
