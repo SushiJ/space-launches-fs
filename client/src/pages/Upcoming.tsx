@@ -5,6 +5,9 @@ import useLaunches from "../hooks/useLaunches";
 function UpcomingPage() {
   const { launches, abortLaunch } = useLaunches();
   const tableBody = useMemo(() => {
+    if (launches.length === 0) {
+      return;
+    }
     return launches
       ?.filter((launch) => launch.upcoming)
       .map((launch) => {
@@ -53,6 +56,9 @@ function UpcomingPage() {
           </thead>
           <tbody>{tableBody}</tbody>
         </table>
+        {launches.length === 0 && (
+          <p class="text-center pt-8 text-2xl">No upcoming launches found</p>
+        )}
       </div>
     </Layout>
   );

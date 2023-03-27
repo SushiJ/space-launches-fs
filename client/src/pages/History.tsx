@@ -8,7 +8,7 @@ function HistoryPage() {
     useLaunches();
   const tableBody = useMemo(() => {
     return launches
-      .filter((launch: Launch) => launch.upcoming)
+      .filter((launch: Launch) => !launch.upcoming)
       .map((launch: Launch) => (
         <tr key={String(launch.flightNumber)} class="">
           <td class="">{launch.flightNumber}</td>

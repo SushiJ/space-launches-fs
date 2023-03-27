@@ -13,5 +13,5 @@ export type SubmitLaunch = {
   mission: string;
   rocket: string;
   destination: string;
-  launchDate: Date;
+  launchDate: string;
 };

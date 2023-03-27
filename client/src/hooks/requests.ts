@@ -15,13 +15,32 @@ async function httpGetLaunches() {
 }
 
 async function httpSubmitLaunch(launch: SubmitLaunch) {
-  // TODO: Once API is ready.
-  // Submit given launch data to launch system.
+  try {
+    return await fetch(`${URL}/launches`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(launch),
+    });
+  } catch (e) {
+    return {
+      ok: false,
+    };
+  }
 }
 
-async function httpAbortLaunch(id: string) {
-  // TODO: Once API is ready.
-  // Delete launch with given ID.
+async function httpAbortLaunch(id: number) {
+  try {
+    return await fetch(`${URL}/launches/${id}`, {
+      method: "DELETE",
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      ok: false,
+    };
+  }
 }
 
 export { httpGetPlanets, httpGetLaunches, httpSubmitLaunch, httpAbortLaunch };
