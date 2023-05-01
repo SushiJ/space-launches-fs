@@ -32,7 +32,7 @@ describe("Test POST /launch", () => {
   });
 
   test("It should catch missing required properties and respond with 400 bad request", async () => {
-    await request(app)
+    const response = await request(app)
       .post("/launches")
       .send({
         mission: "USS Enterprise",
@@ -41,9 +41,13 @@ describe("Test POST /launch", () => {
       })
       .expect("Content-Type", /json/)
       .expect(400);
+
+    expect(response.body).toStrictEqual({
+      error: "Launch date is required",
+    });
   });
   test("It should catch invalid dates and respond with 400 bad request", async () => {
-    await request(app)
+    const response = await request(app)
       .post("/launches")
       .send({
         mission: "USS Enterprise",
@@ -53,5 +57,9 @@ describe("Test POST /launch", () => {
       })
       .expect("Content-Type", /json/)
       .expect(400);
+
+    expect(response.body).toStrictEqual({
+      error: "Launch Date is not a valid date",
+    });
   });
 });
