@@ -1,11 +1,10 @@
 import { Form } from "../components/Form";
 import Layout from "../components/Layout";
-import useLaunches from "../hooks/useLaunches";
 import usePlanets from "../hooks/usePlanets";
+import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
 
 function Home() {
-  const { isPendingLaunch, submitLaunch } = useLaunches();
-
+  const submitLaunch = useSubmitLaunch();
   const planets = usePlanets();
 
   return (
@@ -28,11 +27,7 @@ function Home() {
             times Earth's value.
           </li>
         </ul>
-        <Form
-          planets={planets}
-          submitLaunch={submitLaunch}
-          isPendingLaunch={isPendingLaunch}
-        />
+        <Form planets={planets} submitLaunch={submitLaunch} />
       </div>
     </Layout>
   );

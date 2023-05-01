@@ -4,14 +4,14 @@ const URL = "http://localhost:3000";
 
 async function httpGetPlanets() {
   const response = await fetch(`${URL}/planets`);
-  const result = await response.json();
+  const result = (await response.json()) as Array<string>;
   return result;
 }
 
 async function httpGetLaunches() {
   const response = await fetch(`${URL}/launches`);
   const result = (await response.json()) as Array<Launch>;
-  return result.sort((a: any, b: any) => a.flightNumber - b.flightNumber);
+  return result.sort((a: Launch, b: Launch) => a.flightNumber - b.flightNumber);
 }
 
 async function httpSubmitLaunch(launch: SubmitLaunch) {

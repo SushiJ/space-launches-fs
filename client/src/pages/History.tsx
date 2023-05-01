@@ -4,8 +4,7 @@ import { useMemo } from "preact/hooks";
 import { Launch } from "../types/types";
 
 function HistoryPage() {
-  const { launches, abortLaunch, submitLaunch, isPendingLaunch } =
-    useLaunches();
+  const { launches } = useLaunches();
   const tableBody = useMemo(() => {
     return launches
       .filter((launch: Launch) => !launch.upcoming)

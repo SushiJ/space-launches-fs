@@ -1,17 +1,23 @@
 import { useMemo } from "preact/hooks";
 
-export function Form(props: any) {
+export function Form({
+  planets,
+  submitLaunch,
+}: {
+  planets: Array<string>;
+  submitLaunch: (e) => Promise<void>;
+}) {
   const selectorBody = useMemo(() => {
-    return props.planets?.map((planet: any) => (
-      <option value={planet.kepler_name} key={planet.kepler_name}>
-        {planet.kepler_name}
+    return planets?.map((planet: string) => (
+      <option value={planet} key={planet}>
+        {planet}
       </option>
     ));
-  }, [props.planets]);
+  }, [planets]);
 
   const today = new Date().toISOString().split("T")[0];
   return (
-    <form onSubmit={props.submitLaunch} className="space-y-6 mt-8">
+    <form onSubmit={submitLaunch} className="space-y-6 mt-8">
       <div class="">
         <label htmlFor="launch" class="text-lg font-medium leading-6">
           Launch Date
@@ -51,7 +57,7 @@ export function Form(props: any) {
           type="text"
           name="rocket-name"
           id="rocket-name"
-          defaultValue="Something rocket"
+          defaultValue=""
           class="block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
         />
       </div>
@@ -73,7 +79,6 @@ export function Form(props: any) {
       <div class="">
         <button
           type="submit"
-          disabled={props.isPendingLaunch}
           class="text-sm hover:bg-emerald-200
           bg-emerald-400 p-2 rounded-sm text-gray-900 mt-2 disabled:cursor-auto disabled:bg-emerald-300"
         >

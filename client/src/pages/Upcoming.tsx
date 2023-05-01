@@ -1,9 +1,11 @@
 import { useMemo } from "preact/hooks";
 import Layout from "../components/Layout";
+import { useAbortLaunches } from "../hooks/useAbortLaunch";
 import useLaunches from "../hooks/useLaunches";
 
 function UpcomingPage() {
-  const { launches, abortLaunch } = useLaunches();
+  const abortLaunch = useAbortLaunches();
+  const { launches } = useLaunches();
   const tableBody = useMemo(() => {
     if (launches.length === 0) {
       return;
