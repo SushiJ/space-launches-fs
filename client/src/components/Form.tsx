@@ -73,9 +73,9 @@ export function Form(props: any) {
       <div class="">
         <button
           type="submit"
-          disabled={props.isPendingLaunch || props.isFormEmpty}
+          disabled={props.isPendingLaunch}
           class="text-sm hover:bg-emerald-200
-          bg-emerald-400 p-2 rounded-sm text-gray-900 mt-2"
+          bg-emerald-400 p-2 rounded-sm text-gray-900 mt-2 disabled:cursor-auto disabled:bg-emerald-300"
         >
           Save
         </button>

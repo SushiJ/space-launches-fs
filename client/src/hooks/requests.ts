@@ -16,14 +16,16 @@ async function httpGetLaunches() {
 
 async function httpSubmitLaunch(launch: SubmitLaunch) {
   try {
-    return await fetch(`${URL}/launches`, {
+    const res = await fetch(`${URL}/launches`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(launch),
     });
+    return res;
   } catch (e) {
+    console.log(e);
     return {
       ok: false,
     };

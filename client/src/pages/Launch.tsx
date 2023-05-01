@@ -4,8 +4,7 @@ import useLaunches from "../hooks/useLaunches";
 import usePlanets from "../hooks/usePlanets";
 
 function Home() {
-  const { launches, isPendingLaunch, submitLaunch, abortLaunch } =
-    useLaunches();
+  const { isPendingLaunch, submitLaunch } = useLaunches();
 
   const planets = usePlanets();
 

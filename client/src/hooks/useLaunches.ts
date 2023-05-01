@@ -7,6 +7,8 @@ function useLaunches() {
   const [launches, saveLaunches] = useState<Array<Launch> | []>([]);
   const [isPendingLaunch, setPendingLaunch] = useState(false);
   const [isFormEmpty, setIsFormEmpty] = useState(true);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const getLaunches = useCallback(async () => {
     const fetchedLaunches = await httpGetLaunches();
@@ -20,7 +22,7 @@ function useLaunches() {
   const submitLaunch = useCallback(
     async (e: any) => {
       e.preventDefault();
-      // setPendingLaunch(true);
+      setPendingLaunch(true);
       const data = new FormData(e.target);
       /* @ts-expect-error */
       const launchDate = new Date(data.get("launch-date")).toJSON();
@@ -33,12 +35,12 @@ function useLaunches() {
       } else {
         setIsFormEmpty(false);
       }
-      const response = (await httpSubmitLaunch({
+      const response = await httpSubmitLaunch({
         launchDate,
         mission,
         rocket,
         destination,
-      })) as any;
+      });
 
       // TODO: Set success based on response.
       if (response.ok) {
@@ -47,7 +49,8 @@ function useLaunches() {
           setPendingLaunch(false);
         }, 800);
       } else {
-        console.log(" submit Launch Failure");
+        setError(true);
+        setErrorMessage("Something went wrong");
       }
     },
     [getLaunches]
@@ -58,11 +61,12 @@ function useLaunches() {
       const response = await httpAbortLaunch(id);
 
       // TODO: Set success based on response.
-      const success = response.ok;
-      if (success) {
-        getLaunches();
+      if (!response.ok) {
+        setError(true);
+        setErrorMessage("Something went wrong");
+        console.log(response);
       } else {
-        console.log("Abort Launch Failure");
+        getLaunches();
       }
     },
     [getLaunches]
@@ -74,6 +78,7 @@ function useLaunches() {
     submitLaunch,
     abortLaunch,
     isFormEmpty,
+    error,
   };
 }
 
