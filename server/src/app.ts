@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { router } from "./routes";
 import cors from "cors";
 import { parseCsv } from "./models/planets";
@@ -15,10 +15,9 @@ app.use(morgan("combined"));
 app.use(express.json());
 app.use(router.planetsRouter);
 app.use(router.launchesRouter);
-app.get("/", (_req: Request, res: Response) => {
-  res.sendStatus(200);
-});
+
 app.listen(PORT, async () => {
   await parseCsv();
-  console.log(`Live at https://localhost:${PORT}`);
 });
+
+export default app;
