@@ -7,17 +7,25 @@ const reqSchema = z.object({
   }),
   launchDate: z
     .string({
-      required_error: "Launch Date is required",
+      required_error: "Launch date is required",
     })
     .datetime({
       message: "Launch Date is not a valid date",
     }),
-  destination: z.string({
-    required_error: "Destination is required",
-  }),
-  rocket: z.string({
-    required_error: "Rocket name is required",
-  }),
+  destination: z
+    .string({
+      required_error: "Destination / target is required",
+    })
+    .min(1, {
+      message: 'Destination name can\'t be ""',
+    }),
+  rocket: z
+    .string({
+      required_error: "Rocket name is required",
+    })
+    .min(1, {
+      message: 'Rocket name can\'t be ""',
+    }),
 });
 
 export function validatePostRequest(
