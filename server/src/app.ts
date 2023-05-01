@@ -16,8 +16,13 @@ app.use(express.json());
 app.use(router.planetsRouter);
 app.use(router.launchesRouter);
 
-app.listen(PORT, async () => {
-  await parseCsv();
+app.listen(PORT, () => {
+  parseCsv()
+    .then(() => {
+      console.log("Parsed");
+      console.log(`Server up at http://localhost${PORT}`);
+    })
+    .catch((e) => console.log(e));
 });
 
 export default app;
