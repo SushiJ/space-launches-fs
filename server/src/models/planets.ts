@@ -19,13 +19,8 @@ function planetIsHabitable(planet: PlanetData) {
   );
 }
 
-type PromiseType = {
-  habitable: Array<PlanetData>;
-  planetNames: Array<string>;
-};
-
 export function parseCsv() {
-  return new Promise<PromiseType>((resolve, reject) => {
+  return new Promise<Array<string>>((resolve, reject) => {
     fs.createReadStream(CSV_FILE)
       .pipe(
         parse({
@@ -41,7 +36,7 @@ export function parseCsv() {
       .on("error", (err) => reject(err))
       .on("end", () => {
         planetNames = habitable.map((planet) => planet["kepler_name"]);
-        resolve({ habitable, planetNames });
+        resolve(planetNames);
       });
   });
 }
