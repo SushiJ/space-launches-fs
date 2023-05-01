@@ -19,11 +19,11 @@ export function httpAbortLaunch(req: Request, res: Response) {
   const { id } = req.params;
 
   const launch = findLaunchesById(parseInt(id));
-  if (launch) {
-    const launch = AboutLaunchById(parseInt(id));
-    return res.status(200).json(launch);
+  if (!launch) {
+    return res.status(404).json({
+      error: "Launch not found",
+    });
   }
-  return res.status(404).json({
-    error: "Launch not found",
-  });
+  const abortedLaunch = AboutLaunchById(parseInt(id));
+  return res.status(200).json(abortedLaunch);
 }

@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 
 const reqSchema = z.object({
-  mission: z.string({
-    required_error: "Mission name is required",
+  mission: z.string().min(6, {
+    message: "Mission Name should be at least 6 character long",
   }),
   launchDate: z
     .string({
@@ -27,10 +27,8 @@ export function validatePostRequest(
 ) {
   const validateReqest = reqSchema.safeParse(req.body);
   if (!validateReqest.success) {
-    const message = validateReqest.error.issues.map((issue) => {
-      return issue.message;
-    });
-    return res.status(400).json({ message });
+    const message = validateReqest.error.issues.map((issue) => issue.message);
+    return res.status(400).json({ error: message.toString() });
   }
   return next();
 }

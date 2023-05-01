@@ -41,8 +41,8 @@ function getLaunchById(id: number) {
 }
 
 export function AboutLaunchById(id: number) {
-  const launch = getLaunchById(id);
-  launch!.success = false;
-  launch!.upcoming = false;
+  const launch = getLaunchById(id) as Launch;
+  launch.success = false;
+  launch.upcoming = false;
   return launch;
 }

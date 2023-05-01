@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse";
-import { PlanetData } from "../types/types";
+import { PlanetData } from "../types";
 
 export const habitable: PlanetData[] = [];
 export let planetNames: Array<string> = [];
 
-const CSV_FILE = path.join(__dirname, "..", "data", "kep_data.csv");
+const CSV_FILE = path.join(__dirname, "../../", "data", "kep_data.csv");
 
 // csv can be downloaded from https://exoplanetarchive.ipac.caltech.edu/docs/data.html
 // Download the KOI table
