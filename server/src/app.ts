@@ -1,11 +1,14 @@
 import express from "express";
-import { router } from "./routes";
-import cors from "cors";
-import { parseCsv } from "./models/planets";
 import morgan from "morgan";
+import cors from "cors";
+
+import { router } from "./routes";
+import connectDB from "./utils/dbConnect";
+import { parseCsv } from "./models/planets";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -17,12 +20,17 @@ app.use(router.planetsRouter);
 app.use(router.launchesRouter);
 
 app.listen(PORT, () => {
-  parseCsv()
+  connectDB()
     .then(() => {
-      console.log("Parsed");
-      console.log(`Server up at http://localhost${PORT}`);
+      console.log("connected To DB");
+      parseCsv()
+        .then(() => {
+          console.log("Parsed");
+          console.log(`Server up at http://localhost${PORT}`);
+        })
+        .catch((e) => console.log(e));
     })
-    .catch((e) => console.log(e));
+    .catch((e) => console.error("Failed to connect", e));
 });
 
 export default app;
