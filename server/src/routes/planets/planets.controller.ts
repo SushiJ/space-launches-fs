@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
-import { planetNames } from "../../models/planets";
+import planets from "../../schema/planets";
 
 export function getAllPlanets(_req: Request, res: Response) {
-  return res.status(200).json(planetNames);
+  planets
+    .find({})
+    .then((data) => {
+      return res.status(200).json(data);
+    })
+    .catch((e) => {
+      return res.status(500).json(e);
+    });
 }

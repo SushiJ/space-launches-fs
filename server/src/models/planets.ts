@@ -2,9 +2,7 @@ import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse";
 import { PlanetData } from "../types";
-
-export const habitable: PlanetData[] = [];
-export let planetNames: Array<string> = [];
+import planets from "../schema/planets";
 
 const CSV_FILE = path.join(__dirname, "../../", "data", "kep_data.csv");
 
@@ -19,8 +17,25 @@ function planetIsHabitable(planet: PlanetData) {
   );
 }
 
+async function savePlanet(data: PlanetData) {
+  try {
+    await planets.updateOne(
+      {
+        planet: data.kepler_name,
+      },
+      {
+        planet: data.kepler_name,
+      },
+      {
+        upsert: true,
+      }
+    );
+  } catch (e) {
+    console.error("Unable to save the planet: ", e);
+  }
+}
 export function parseCsv() {
-  return new Promise<Array<string>>((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     fs.createReadStream(CSV_FILE)
       .pipe(
         parse({
@@ -28,15 +43,18 @@ export function parseCsv() {
           columns: true,
         })
       )
-      .on("data", (data) => {
+      .on("data", async (data) => {
         if (planetIsHabitable(data)) {
-          habitable.push(data);
+          savePlanet(data);
         }
       })
       .on("error", (err) => reject(err))
       .on("end", () => {
-        planetNames = habitable.map((planet) => planet["kepler_name"]);
-        resolve(planetNames);
+        planets
+          .find({})
+          .then((data) => console.log(data.length))
+          .catch((e) => console.log(e));
+        resolve();
       });
   });
 }
