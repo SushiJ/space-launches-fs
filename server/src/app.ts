@@ -1,7 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-
+import { setLogLevel } from "@typegoose/typegoose";
+setLogLevel("TRACE");
 import { router } from "./routes";
 import connectDB from "./utils/dbConnect";
 import { parseCsv } from "./models/planets";

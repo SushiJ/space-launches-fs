@@ -1,4 +1,4 @@
-import { getModelForClass, prop } from "@typegoose/typegoose";
+import { ReturnModelType, getModelForClass, prop } from "@typegoose/typegoose";
 
 export class Launches {
   @prop({ required: true, unique: true })
@@ -14,7 +14,7 @@ export class Launches {
   public rocket!: string;
 
   @prop({ required: true })
-  public target!: string;
+  public destination!: string;
 
   @prop({ required: true, default: true })
   public success!: string;
@@ -23,7 +23,9 @@ export class Launches {
   public upcoming!: string;
 
   @prop({ type: () => [String], required: true })
-  public customers!: Array<string>;
+  public customer!: Array<string>;
 }
 
-export default getModelForClass(Launches);
+const launchesModel: ReturnModelType<typeof Launches> =
+  getModelForClass(Launches);
+export default launchesModel;
