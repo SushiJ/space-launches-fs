@@ -1,10 +1,10 @@
-import { Launch, Planets, SubmitLaunch } from "../types";
+import { Launch, Planet, SubmitLaunch } from "../types";
 
 const URL = "http://localhost:3000";
 
 async function httpGetPlanets() {
   const response = await fetch(`${URL}/planets`);
-  const result = (await response.json()) as Array<Planets>;
+  const result = (await response.json()) as Array<Planet>;
   const data = result.reduce((acc, planet) => {
     acc.push(planet["planet"]);
     return acc;

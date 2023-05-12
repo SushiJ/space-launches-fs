@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "preact/hooks";
-import { Launch } from "../types/types";
+import { Launch } from "../types/";
 
 import { httpGetLaunches } from "./requests";
 

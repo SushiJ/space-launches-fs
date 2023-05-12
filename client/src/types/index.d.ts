@@ -16,8 +16,6 @@ export type SubmitLaunch = {
   launchDate: string;
 };
 
-export type Planets = {
-  _id: string;
+export type Planet = {
   planet: string;
-  __v: number;
 };
