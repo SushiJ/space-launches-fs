@@ -17,10 +17,10 @@ export class Launches {
   public destination!: string;
 
   @prop({ required: true, default: true })
-  public success!: string;
+  public success!: boolean;
 
   @prop({ required: true })
-  public upcoming!: string;
+  public upcoming!: boolean;
 
   @prop({ type: () => [String], required: true })
   public customer!: Array<string>;
