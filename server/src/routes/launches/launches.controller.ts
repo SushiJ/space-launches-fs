@@ -1,29 +1,38 @@
 import { Request, Response } from "express";
 import {
-  AboutLaunchById,
+  aboutLaunchById,
   addNewLaunch,
   findLaunchesById,
   getAllLaunches,
 } from "../../models/launches";
 import { LaunchRequest } from "../../types";
 
-export function httpGetAllLaunches(_req: Request, res: Response) {
-  return res.status(200).json(getAllLaunches());
+export async function httpGetAllLaunches(_req: Request, res: Response) {
+  return res.status(200).json({ success: true, data: await getAllLaunches() });
 }
-export function httpPostNewLaunches(req: Request, res: Response) {
+export async function httpPostNewLaunches(req: Request, res: Response) {
   const newLaunch = req.body as LaunchRequest;
-  addNewLaunch(newLaunch);
-  return res.status(201).json(newLaunch);
+  await addNewLaunch(newLaunch);
+  return res.status(201).json({ success: true, data: newLaunch });
 }
-export function httpAbortLaunch(req: Request, res: Response) {
+export async function httpAbortLaunch(req: Request, res: Response) {
   const { id } = req.params;
 
-  const launch = findLaunchesById(parseInt(id));
+  const launch = await findLaunchesById(Number(id));
   if (!launch) {
     return res.status(404).json({
+      success: false,
       error: "Launch not found",
     });
   }
-  const abortedLaunch = AboutLaunchById(parseInt(id));
-  return res.status(200).json(abortedLaunch);
+  const abortedLaunch = await aboutLaunchById(parseInt(id));
+  if (!abortedLaunch) {
+    return res.status(400).json({
+      success: false,
+      error: "Failed to abort",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+  });
 }

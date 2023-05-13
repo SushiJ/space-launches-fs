@@ -36,7 +36,7 @@ export function validatePostRequest(
   const validateReqest = reqSchema.safeParse(req.body);
   if (!validateReqest.success) {
     const message = validateReqest.error.issues.map((issue) => issue.message);
-    return res.status(400).json({ error: message.toString() });
+    return res.status(400).json({ success: false, error: message.join(", ") });
   }
   return next();
 }
