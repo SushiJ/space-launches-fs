@@ -1,6 +1,7 @@
+import launchesModel from "../schema/launches";
 import { Launch, LaunchRequest } from "../types";
 
-let latestFlightNumber = 100;
+const DEFAULT_FLIGHT_NUMBER = 100;
 
 const launch = {
   flightNumber: 100,
@@ -13,36 +14,69 @@ const launch = {
   success: true,
 };
 
-const launches = new Map<number, Launch>();
-
-launches.set(launch.flightNumber, launch);
-
-export function getAllLaunches() {
-  return Array.from(launches.values());
+export async function getAllLaunches() {
+  try {
+    const launches = await launchesModel.find({}, { _id: 0, __v: 0 });
+    return launches;
+  } catch (e) {
+    console.log(e);
+    return;
+  }
 }
 
-export function addNewLaunch(launch: LaunchRequest) {
-  latestFlightNumber++;
-  launches.set(
-    latestFlightNumber,
-    Object.assign(launch, {
-      flightNumber: latestFlightNumber,
-      customer: ["abc", "xyz"],
-      upcoming: true,
-      success: true,
-    })
+export async function addNewLaunch(launch: LaunchRequest) {
+  const newFlightNumber = (await getLatestFlightNumber()) + 1;
+
+  const newLaunch = Object.assign(launch, {
+    flightNumber: newFlightNumber,
+    customer: ["abc", "xyz"],
+    upcoming: true,
+    success: true,
+  });
+
+  await saveLaunch(newLaunch);
+}
+
+async function getLatestFlightNumber(): Promise<number> {
+  const latestLaunch = await launchesModel.findOne().sort("-flightNumber");
+
+  if (!latestLaunch) {
+    return DEFAULT_FLIGHT_NUMBER;
+  }
+  return latestLaunch.flightNumber;
+}
+
+export async function findLaunchesById(id: number) {
+  return await launchesModel.findOne({
+    flightNumber: id,
+  });
+}
+
+async function saveLaunch(launch: Launch) {
+  await launchesModel.findOneAndUpdate(
+    {
+      flightNumber: launch.flightNumber,
+    },
+    launch,
+    {
+      upsert: true,
+    }
   );
 }
-export function findLaunchesById(id: number) {
-  return launches.has(id);
-}
-function getLaunchById(id: number) {
-  return launches.get(id);
-}
 
-export function AboutLaunchById(id: number) {
-  const launch = getLaunchById(id) as Launch;
-  launch.success = false;
-  launch.upcoming = false;
-  return launch;
+saveLaunch(launch)
+  .then(() => console.log("Success added"))
+  .catch((e) => console.log(e));
+
+export async function aboutLaunchById(id: number) {
+  const launch = await launchesModel.updateOne(
+    {
+      flightNumber: id,
+    },
+    {
+      upcoming: false,
+      success: false,
+    }
+  );
+  return launch.acknowledged && launch.modifiedCount === 1;
 }
