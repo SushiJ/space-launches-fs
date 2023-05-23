@@ -2,20 +2,36 @@ import { Launch, Planet, SubmitLaunch } from "../types";
 
 const URL = "http://localhost:3000";
 
+type RequestSuccess = {
+  success: true;
+  data: Array<Planet>;
+};
+
+type RequestFailed = {
+  success: false;
+  error: string;
+};
+
+type Request = RequestSuccess | RequestFailed;
+
+type RequestLaunch = {
+  success: true;
+  data: Array<Launch>;
+};
+
 async function httpGetPlanets() {
   const response = await fetch(`${URL}/planets`);
-  const result = (await response.json()) as Array<Planet>;
-  const data = result.reduce((acc, planet) => {
-    acc.push(planet["planet"]);
-    return acc;
-  }, []);
-  return data;
+  const result = (await response.json()) as Request;
+
+  return result;
 }
 
 async function httpGetLaunches() {
   const response = await fetch(`${URL}/launches`);
-  const result = (await response.json()) as Array<Launch>;
-  return result.sort((a: Launch, b: Launch) => a.flightNumber - b.flightNumber);
+  const result = (await response.json()) as RequestLaunch;
+  return result.data.sort(
+    (a: Launch, b: Launch) => a.flightNumber - b.flightNumber
+  );
 }
 
 async function httpSubmitLaunch(launch: SubmitLaunch) {
@@ -27,12 +43,10 @@ async function httpSubmitLaunch(launch: SubmitLaunch) {
       },
       body: JSON.stringify(launch),
     });
-    return res;
+    const data = (await res.json()) as Request;
+    return data;
   } catch (e) {
     console.log(e);
-    return {
-      ok: false,
-    };
   }
 }
 
@@ -43,9 +57,6 @@ async function httpAbortLaunch(id: number) {
     });
   } catch (e) {
     console.log(e);
-    return {
-      ok: false,
-    };
   }
 }
 

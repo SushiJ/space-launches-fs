@@ -1,15 +1,16 @@
 import { useMemo } from "preact/hooks";
+import { Planet } from "../types";
 
 export function Form({
   planets,
   submitLaunch,
 }: {
-  planets: Array<string>;
+  planets: Array<Planet>;
   submitLaunch: (e) => Promise<void>;
 }) {
   const selectorBody = useMemo(() => {
-    return planets?.map((planet: string) => (
-      <option value={planet} key={planet}>
+    return planets?.map((planet: Planet) => (
+      <option value={planet.planet} key={planet.planet}>
         {planet}
       </option>
     ));

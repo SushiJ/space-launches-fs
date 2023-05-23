@@ -9,13 +9,11 @@ export function useAbortLaunches() {
     async (id: number) => {
       const response = await httpAbortLaunch(id);
 
-      // TODO: Set success based on response.
       if (!response.ok) {
-        console.log(response);
+        console.error(response);
         return;
-      } else {
-        getLaunches();
       }
+      await getLaunches();
     },
     [getLaunches]
   );

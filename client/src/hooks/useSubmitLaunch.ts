@@ -1,11 +1,12 @@
 import { useCallback, useState } from "preact/hooks";
+import { Launch } from "../types";
 import { httpSubmitLaunch } from "./requests";
 import useLaunches from "./useLaunches";
 
 export function useSubmitLaunch() {
   const [isPendingLaunch, setPendingLaunch] = useState(false);
   const [error, setError] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
   const { getLaunches } = useLaunches();
 
@@ -28,17 +29,18 @@ export function useSubmitLaunch() {
       });
 
       // TODO: Set success based on response.
-      if (response.ok) {
+      if (response.success === false) {
+        setError(true);
+        setErrorMsg(response.error);
+        return;
+      } else {
         getLaunches();
         setTimeout(() => {
           setPendingLaunch(false);
         }, 800);
-      } else {
-        setError(true);
-        setErrorMsg("Something went wrong");
       }
     },
     [getLaunches]
   );
-  return submitLaunch;
+  return { submitLaunch, isPendingLaunch, error, errorMsg };
 }

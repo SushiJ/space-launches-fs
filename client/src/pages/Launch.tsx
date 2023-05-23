@@ -4,7 +4,7 @@ import usePlanets from "../hooks/usePlanets";
 import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
 
 function Home() {
-  const submitLaunch = useSubmitLaunch();
+  const { submitLaunch, isPendingLaunch, error, errorMsg } = useSubmitLaunch();
   const planets = usePlanets();
 
   return (
@@ -29,8 +29,14 @@ function Home() {
         </ul>
         <Form planets={planets} submitLaunch={submitLaunch} />
       </div>
+      <div>{error && <ErrorComponent />}</div>
     </Layout>
   );
+}
+
+function ErrorComponent() {
+  const { errorMsg } = useSubmitLaunch();
+  return <div>{errorMsg}</div>;
 }
 
 export default Home;

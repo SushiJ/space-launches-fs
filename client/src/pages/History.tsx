@@ -1,7 +1,7 @@
 import useLaunches from "../hooks/useLaunches";
 import Layout from "../components/Layout";
 import { useMemo } from "preact/hooks";
-import { Launch } from "../types/types";
+import { Launch } from "../types";
 
 function HistoryPage() {
   const { launches } = useLaunches();
@@ -18,7 +18,6 @@ function HistoryPage() {
         </tr>
       ));
   }, [launches]);
-  console.log(launches[0]?.launchDate);
   return (
     <Layout>
       <div class="text-gray-100 border-emerald-400 h-auto border-[1px] rounded-sm text-xl p-8">

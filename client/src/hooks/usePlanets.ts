@@ -7,7 +7,14 @@ function usePlanets() {
   const [planets, savePlanets] = useState<Array<Planet>>([]);
 
   const getPlanets = useCallback(async () => {
-    const fetchedPlanets = await httpGetPlanets();
+    const result = await httpGetPlanets();
+    if (result.success === false) {
+      return;
+    }
+    const fetchedPlanets = result.data.reduce((acc, planet) => {
+      acc.push(planet["planet"]);
+      return acc;
+    }, []);
     savePlanets(fetchedPlanets);
   }, []);
 
