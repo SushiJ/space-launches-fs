@@ -5,20 +5,13 @@ import axios from "axios";
 const DEFAULT_FLIGHT_NUMBER = 100;
 const SPACEX_API_URL = "https://api.spacexdata.com/v4/launches/query";
 
-const launch = {
-  flightNumber: 100,
-  mission: "Kepler Exploration X",
-  rocket: "Explorer IS1",
-  launchDate: new Date("December 25, 2025"),
-  destination: "Kepler-442 b",
-  customers: ["abc", "xyz"],
-  upcoming: true,
-  success: true,
-};
-
-export async function getAllLaunches() {
+export async function getAllLaunches(limit: number, skip: number) {
   try {
-    const launches = await launchesModel.find({}, { _id: 0, __v: 0 });
+    const launches = await launchesModel
+      .find({}, { _id: 0, __v: 0 })
+      .sort({ flightNumber: 1 })
+      .skip(skip)
+      .limit(limit);
     return launches;
   } catch (e) {
     console.log(e);
@@ -65,10 +58,6 @@ async function saveLaunch(launch: Launch) {
     }
   );
 }
-
-saveLaunch(launch)
-  .then(() => console.log("Success added"))
-  .catch((e) => console.log(e));
 
 export async function abortLaunchById(id: number) {
   const launch = await launchesModel.updateOne(

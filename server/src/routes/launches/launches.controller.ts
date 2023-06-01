@@ -6,9 +6,16 @@ import {
   getAllLaunches,
 } from "../../models/launches";
 import { LaunchRequest } from "../../types";
+import { getPagination } from "../../utils/paginate";
 
-export async function httpGetAllLaunches(_req: Request, res: Response) {
-  return res.status(200).json({ success: true, data: await getAllLaunches() });
+export async function httpGetAllLaunches(req: Request, res: Response) {
+  const { skip, limit } = getPagination(
+    req.query as { page: string; limit: string }
+  );
+  return res.status(200).json({
+    success: true,
+    data: await getAllLaunches(limit, skip),
+  });
 }
 export async function httpPostNewLaunches(req: Request, res: Response) {
   const newLaunch = req.body as LaunchRequest;
