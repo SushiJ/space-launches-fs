@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {
-  aboutLaunchById,
+  abortLaunchById,
   addNewLaunch,
   findLaunchesById,
   getAllLaunches,
@@ -25,7 +25,7 @@ export async function httpAbortLaunch(req: Request, res: Response) {
       error: "Launch not found",
     });
   }
-  const abortedLaunch = await aboutLaunchById(parseInt(id));
+  const abortedLaunch = await abortLaunchById(parseInt(id));
   if (!abortedLaunch) {
     return res.status(400).json({
       success: false,

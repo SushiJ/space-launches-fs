@@ -13,7 +13,7 @@ export class Launches {
   @prop({ required: true })
   public rocket!: string;
 
-  @prop({ required: true })
+  @prop()
   public destination!: string;
 
   @prop({ required: true, default: true })
@@ -23,7 +23,7 @@ export class Launches {
   public upcoming!: boolean;
 
   @prop({ type: () => [String], required: true })
-  public customer!: Array<string>;
+  public customers!: Array<string>;
 }
 
 const launchesModel: ReturnModelType<typeof Launches> =

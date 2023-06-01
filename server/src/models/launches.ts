@@ -1,7 +1,9 @@
 import launchesModel from "../schema/launches";
 import { Launch, LaunchRequest } from "../types";
+import axios from "axios";
 
 const DEFAULT_FLIGHT_NUMBER = 100;
+const SPACEX_API_URL = "https://api.spacexdata.com/v4/launches/query";
 
 const launch = {
   flightNumber: 100,
@@ -9,7 +11,7 @@ const launch = {
   rocket: "Explorer IS1",
   launchDate: new Date("December 25, 2025"),
   destination: "Kepler-442 b",
-  customer: ["abc", "xyz"],
+  customers: ["abc", "xyz"],
   upcoming: true,
   success: true,
 };
@@ -29,7 +31,7 @@ export async function addNewLaunch(launch: LaunchRequest) {
 
   const newLaunch = Object.assign(launch, {
     flightNumber: newFlightNumber,
-    customer: ["abc", "xyz"],
+    customers: ["abc", "xyz"],
     upcoming: true,
     success: true,
   });
@@ -68,7 +70,7 @@ saveLaunch(launch)
   .then(() => console.log("Success added"))
   .catch((e) => console.log(e));
 
-export async function aboutLaunchById(id: number) {
+export async function abortLaunchById(id: number) {
   const launch = await launchesModel.updateOne(
     {
       flightNumber: id,
@@ -79,4 +81,68 @@ export async function aboutLaunchById(id: number) {
     }
   );
   return launch.acknowledged && launch.modifiedCount === 1;
+}
+async function findLaunch(filter: any) {
+  return await launchesModel.findOne(filter);
+}
+
+export async function loadSpaceXData() {
+  const firstLaunch = await findLaunch({
+    flightNumber: 1,
+    rocket: "Falcon 1",
+    mission: "FalconSat",
+  });
+  if (firstLaunch) {
+    console.log("SpaceX Data Already exisits");
+  } else {
+    await populateLaunches();
+  }
+}
+
+async function populateLaunches() {
+  const { data } = await axios.post(SPACEX_API_URL, {
+    query: {},
+    options: {
+      pagination: false,
+      populate: [
+        {
+          path: "rocket",
+          select: {
+            name: 1,
+          },
+        },
+        {
+          path: "payloads",
+          select: {
+            customers: 1,
+          },
+        },
+      ],
+    },
+  });
+
+  if (!data) {
+    throw new Error("spaceXData download failed");
+  }
+
+  const launchDocs = data.docs;
+
+  for (let launchDoc of launchDocs) {
+    const payloads = launchDoc["payloads"];
+    const customers = payloads.flatMap((payload: any) => {
+      return payload["customers"];
+    });
+
+    const launch = {
+      flightNumber: launchDoc["flight_number"] as number,
+      mission: launchDoc["name"] as string,
+      rocket: launchDoc["rocket"]["name"] as string,
+      launchDate: launchDoc["date_local"] as Date,
+      upcoming: launchDoc["upcoming"] as boolean,
+      success: launchDoc["success"] as boolean,
+      customers: customers as Array<string>,
+    };
+
+    await saveLaunch(launch);
+  }
 }

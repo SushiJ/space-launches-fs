@@ -3,8 +3,8 @@ export type Launch = {
   mission: string;
   rocket: string;
   launchDate: Date;
-  destination: string;
-  customer: Array<string>;
+  destination?: string;
+  customers: Array<string>;
   upcoming: boolean;
   success: boolean;
 };
