@@ -20,7 +20,7 @@ function HistoryPage() {
   }, [launches]);
   return (
     <Layout>
-      <div class="text-gray-100 border-emerald-400 h-auto border-[1px] rounded-sm text-xl p-8">
+      <div class="text-gray-100 border-emerald-400 border-[1px] rounded-sm text-xl p-8">
         <p class="mt-4">
           History of mission launchers including SpaceX launches starting from
           the year 2006.

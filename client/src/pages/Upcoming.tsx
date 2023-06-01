@@ -35,7 +35,7 @@ function UpcomingPage() {
 
   return (
     <Layout>
-      <div class="text-gray-100 border-emerald-400 h-auto border-[1px] rounded-sm text-xl p-8">
+      <div class="text-gray-100 border-emerald-400 h-full border-[1px] rounded-sm text-xl p-8">
         <p class="">
           {/* TODO: Rename xyz to something else  */}
           Upcoming missions including both SpaceX launcher and newly scheduled
