@@ -18,7 +18,7 @@ app.use(
 );
 app.use(morgan("combined"));
 app.use(express.json());
-app.use(router.planetsRouter).use(router.launchesRouter).use(router.testRouter);
+app.use(router.planetsRouter).use(router.launchesRouter);
 
 app.listen(PORT, () => {
   connectDB()
