@@ -2,13 +2,16 @@ import { render } from "preact";
 import Router from "preact-router";
 import "./index.css";
 import HistoryPage from "./pages/History";
+import HomePage from "./pages/Home";
 import LaunchPage from "./pages/Launch";
 import UpcomingPage from "./pages/Upcoming";
 
 const Main = () => (
   <Router>
     {/* @ts-expect-error */}
-    <LaunchPage path="/" />
+    <HomePage path="/" />
+    {/* @ts-expect-error */}
+    <LaunchPage path="/launches" />
     {/* @ts-expect-error */}
     <UpcomingPage path="/upcoming" />
     {/* @ts-expect-error */}

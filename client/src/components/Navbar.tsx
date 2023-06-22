@@ -4,43 +4,45 @@ import { Logo } from "./Logo";
 
 function Navbar() {
   return (
-    <nav className="flex items-center py-4 justify-between">
-      <Link className="text-emerald-400" href="/">
-        <Logo />
-      </Link>
-      <div className="text-2xl flex items-center space-x-4">
-        <Link
-          className="flex items-center hover:text-emerald-400"
-          activeClassName=""
-          href="/"
-        >
-          <span className="mx-1">
-            <LaunchIcon />
-          </span>
-          Launch
+    <header className="bg-gray-900 bg-transparent text-gray-100">
+      <nav className="flex items-center py-8 justify-between bg-transparent">
+        <Link className="flex items-center space-x-4 text-2xl" href="/">
+          <Logo />
+          <h1 class="text-xl">
+            Celestial Explorer
+          </h1>
         </Link>
-        <Link
-          className="flex items-center hover:text-emerald-400"
-          activeClassName=""
-          href="/upcoming"
-        >
-          <span className="mx-1">
-            <UpcomingIcon />
-          </span>
-          Upcoming
-        </Link>
-        <Link
-          className="flex items-center hover:text-emerald-400"
-          activeClassName=""
-          href="/history"
-        >
-          <span className="mx-1">
-            <HistoryIcon />
-          </span>
-          History
-        </Link>
-      </div>
-    </nav>
+        <div className="text-2xl flex items-center space-x-4">
+          <Link
+            className="flex items-center hover:text-emerald-400"
+            href="/launches"
+          >
+            <span className="mx-1">
+              <LaunchIcon />
+            </span>
+            Launch
+          </Link>
+          <Link
+            className="flex items-center hover:text-emerald-400"
+            href="/upcoming"
+          >
+            <span className="mx-1">
+              <UpcomingIcon />
+            </span>
+            Upcoming
+          </Link>
+          <Link
+            className="flex items-center hover:text-emerald-400"
+            href="/history"
+          >
+            <span className="mx-1">
+              <HistoryIcon />
+            </span>
+            History
+          </Link>
+        </div>
+      </nav>
+    </header>
   );
 }
 
