@@ -3,13 +3,13 @@ import Layout from "../components/Layout";
 import usePlanets from "../hooks/usePlanets";
 import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
 
-function Home() {
-  const { submitLaunch, isPendingLaunch, error, errorMsg } = useSubmitLaunch();
+function Launches() {
+  const { submitLaunch, error } = useSubmitLaunch();
   const planets = usePlanets();
 
   return (
     <Layout>
-      <div class="text-gray-100 border-emerald-400 h-auto border-[1px] rounded-sm text-2xl p-8">
+      <div class="text-gray-100 border-emerald-400 h-auto border-[1px] border-dashed rounded-sm text-2xl p-8">
         <h2>
           Schedule a mission launch for intersetellar travel to one of the
           Kepler Exoplanets.
@@ -39,4 +39,4 @@ function ErrorComponent() {
   return <div>{errorMsg}</div>;
 }
 
-export default Home;
+export default Launches;
