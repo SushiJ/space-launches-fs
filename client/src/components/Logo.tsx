@@ -1,10 +1,15 @@
-export function Logo() {
+type LogoProps = {
+  width?: string;
+  height?: string;
+};
+
+export function Logo({ width = "75", height = "75" }: LogoProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
-      height={75}
-      width={75}
+      height={height}
+      width={width}
       viewBox="0 0 107 107"
     >
       <path
