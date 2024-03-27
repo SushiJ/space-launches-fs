@@ -1,35 +1,34 @@
 import { Request, Response } from "express";
-import {
-  abortLaunchById,
-  addNewLaunch,
-  findLaunchesById,
-  getAllLaunches,
-} from "../../models/launches";
 import { LaunchRequest } from "../../types";
 import { getPagination } from "../../utils/paginate";
+import { Launches } from "../../models/launches";
+
+const launchesModel = new Launches();
 
 export async function httpGetAllLaunches(req: Request, res: Response) {
   const { skip, limit } = getPagination(
-    req.query as { page: string; limit: string }
+    req.query as { page: string; limit: string },
   );
   return res.status(200).json({
     success: true,
-    data: await getAllLaunches(limit, skip),
+    data: await launchesModel.getAllLaunches(limit, skip),
   });
 }
+
 export async function httpPostNewLaunches(req: Request, res: Response) {
   const newLaunch = req.body as LaunchRequest;
-  await addNewLaunch(newLaunch);
+  await launchesModel.addNewLaunch(newLaunch);
   return res.status(201).json({ success: true, data: newLaunch });
 }
+
 export async function httpAbortLaunch(req: Request, res: Response) {
   const { id } = req.params;
 
-  const launch = await findLaunchesById(Number(id));
+  const launch = await launchesModel.findLaunchesById(Number(id));
   if (!launch) {
     return res.status(404).json({ error: "Launch not found" });
   }
-  const abortedLaunch = await abortLaunchById(parseInt(id));
+  const abortedLaunch = await launchesModel.abortLaunchById(parseInt(id));
   if (!abortedLaunch) {
     return res.status(400).json({
       success: false,
