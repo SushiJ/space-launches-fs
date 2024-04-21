@@ -19,3 +19,20 @@ export type SubmitLaunch = {
 export type Planet = {
   planet: string;
 };
+
+export type RequestSuccess = {
+  success: true;
+  data: Array<Planet>;
+};
+
+export type RequestFailed = {
+  success: false;
+  error: string;
+};
+
+export type RequestLaunch = {
+  success: true;
+  data: Array<Launch>;
+};
+
+export type Request = RequestSuccess | RequestFailed;
