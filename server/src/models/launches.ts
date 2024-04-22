@@ -7,17 +7,12 @@ const SPACEX_API_URL = "https://api.spacexdata.com/v4/launches/query";
 
 export class Launches {
   async getAllLaunches(limit: number, skip: number) {
-    try {
-      const launches = await launchesModel
-        .find({}, { _id: 0, __v: 0 })
-        .sort({ flightNumber: 1 })
-        .skip(skip)
-        .limit(limit);
-      return launches;
-    } catch (e) {
-      console.log(e);
-      return;
-    }
+    const launches = await launchesModel
+      .find({}, { _id: 0, __v: 0 })
+      .sort({ flightNumber: 1 })
+      .skip(skip)
+      .limit(limit);
+    return launches;
   }
 
   async addNewLaunch(launch: LaunchRequest) {

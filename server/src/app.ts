@@ -21,7 +21,9 @@ app.use(errorHandler);
 
 app.listen(PORT, async () => {
   console.log("Server up", PORT);
-  await connectDB();
+  await connectDB().catch((e) =>
+    console.error("[ERROR]: Couldn't connect to DB\n", e),
+  );
 });
 
 export default app;

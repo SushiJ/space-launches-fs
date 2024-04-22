@@ -1,18 +1,34 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { LaunchRequest } from "../../types";
 import { getPagination } from "../../utils/paginate";
 import { Launches } from "../../models/launches";
 
 const launchesModel = new Launches();
 
-export async function httpGetAllLaunches(req: Request, res: Response) {
-  const { skip, limit } = getPagination(
-    req.query as { page: string; limit: string },
-  );
-  return res.status(200).json({
-    success: true,
-    data: await launchesModel.getAllLaunches(limit, skip),
-  });
+export async function httpGetAllLaunches(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { skip, limit } = getPagination(
+      req.query as { page: string; limit: string },
+    );
+    const result = await launchesModel.getAllLaunches(limit, skip);
+    const what = null;
+
+    if (!what) {
+      res.status(400);
+      throw new Error("This an error yo");
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (e) {
+    next(e);
+  }
 }
 
 export async function httpPostNewLaunches(req: Request, res: Response) {

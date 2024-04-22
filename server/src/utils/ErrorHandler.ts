@@ -1,4 +1,8 @@
-import { type NextFunction, type Response, type Request } from "express";
+import { type Response, type Request, type NextFunction } from "express";
+
+const red = "\x1b[31m";
+// const green = "\\x1b[32m";
+const reset = "\x1b[0m";
 
 export const errorHandler = (
   err: any,
@@ -6,10 +10,12 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  console.info("[INFO]: Middleware Error Handling");
   const errStatus = err.statusCode || 500;
   const errMsg = err.message || "Something went wrong";
-  return res.status(errStatus).json({
+
+  console.error(red + "[ERROR]:" + reset, errMsg, err.stack);
+
+  res.status(errStatus).json({
     success: false,
     status: errStatus,
     message: errMsg,
