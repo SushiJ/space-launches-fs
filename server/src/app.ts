@@ -1,12 +1,9 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-// import { setLogLevel } from "@typegoose/typegoose";
-// setLogLevel("TRACE");
 import { router } from "./routes";
 import connectDB from "./utils/dbConnect";
-// import { parseCsv } from "./models/planets";
-// import { loadSpaceXData } from "./models/launches";
+import { errorHandler } from "./utils/ErrorHandler";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +16,8 @@ app.use(
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(router.planetsRouter).use(router.launchesRouter);
+
+app.use(errorHandler);
 
 app.listen(PORT, async () => {
   console.log("Server up", PORT);
