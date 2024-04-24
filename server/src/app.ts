@@ -1,9 +1,11 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import { router } from "./routes";
 import connectDB from "./utils/dbConnect";
 import { errorHandler } from "./utils/ErrorHandler";
+import { logError } from "./utils/colorLogs";
+import planetsRouter from "./routes/planets";
+import launchesRouter from "./routes/launches";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,15 +17,16 @@ app.use(
 );
 app.use(morgan("combined"));
 app.use(express.json());
-app.use(router.planetsRouter).use(router.launchesRouter);
+
+// INFO: ROUTER
+app.use(planetsRouter);
+app.use(launchesRouter);
 
 app.use(errorHandler);
 
 app.listen(PORT, async () => {
   console.log("Server up", PORT);
-  await connectDB().catch((e) =>
-    console.error("[ERROR]: Couldn't connect to DB\n", e),
-  );
+  await connectDB().catch((e) => logError("Couldn't connect to DB", e));
 });
 
 export default app;
