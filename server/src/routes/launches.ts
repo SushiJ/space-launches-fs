@@ -3,8 +3,8 @@ import {
   httpAbortLaunch,
   httpGetAllLaunches,
   httpPostNewLaunches,
-} from "./launches.controller";
-import { validatePostRequest } from "../../middleware/validatePostRequest";
+} from "../controllers/launches.controller";
+import { validatePostRequest } from "../middleware/validatePostRequest";
 
 const launchesRouter = Router();
 

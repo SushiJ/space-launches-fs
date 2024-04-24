@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { LaunchRequest } from "../../types";
-import { getPagination } from "../../utils/paginate";
-import { Launches } from "../../models/launches";
+import { LaunchRequest } from "../types";
+import { getPagination } from "../utils/paginate";
+import { Launches } from "../models/launches";
 
 const launchesModel = new Launches();
 
@@ -15,12 +15,6 @@ export async function httpGetAllLaunches(
       req.query as { page: string; limit: string },
     );
     const result = await launchesModel.getAllLaunches(limit, skip);
-    const what = null;
-
-    if (!what) {
-      res.status(400);
-      throw new Error("This an error yo");
-    }
 
     res.status(200).json({
       success: true,

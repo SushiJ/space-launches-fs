@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import planets from "../../schema/planets";
+import planets from "../schema/planets";
 
 export function getAllPlanets(_req: Request, res: Response) {
   planets
