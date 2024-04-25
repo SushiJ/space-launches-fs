@@ -1,21 +1,32 @@
-import { useCallback } from "preact/hooks";
-import { httpAbortLaunch } from "./requests";
+import { useCallback, useState } from "preact/hooks";
 import useLaunches from "./useLaunches";
 
 export function useAbortLaunches() {
-  const { getLaunches } = useLaunches();
+  // const [launches, setLaunches] = useState<Array<Launch> | []>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { getLaunches, launches } = useLaunches();
 
   const abortLaunch = useCallback(
     async (id: number) => {
-      const response = await httpAbortLaunch(id);
+      try {
+        setIsLoading(true);
+        const response = await fetch(`${URL}/launches/${id}`, {
+          method: "DELETE",
+        });
+        const result = await response.json();
 
-      if (!response.ok) {
-        console.error(response);
-        return;
+        await getLaunches();
+      } catch (e) {
+        setIsError(true);
+        setError(e);
+      } finally {
+        setIsLoading(false);
       }
-      await getLaunches();
     },
-    [getLaunches]
+    [launches],
   );
 
   return abortLaunch;

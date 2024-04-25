@@ -17,30 +17,4 @@ async function httpGetLaunches() {
   );
 }
 
-async function httpSubmitLaunch(launch: SubmitLaunch) {
-  try {
-    const res = await fetch(`${URL}/launches`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(launch),
-    });
-    const data = (await res.json()) as Request;
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-async function httpAbortLaunch(id: number) {
-  try {
-    return await fetch(`${URL}/launches/${id}`, {
-      method: "DELETE",
-    });
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-export { httpGetPlanets, httpGetLaunches, httpSubmitLaunch, httpAbortLaunch };
+export { httpGetPlanets, httpGetLaunches };
