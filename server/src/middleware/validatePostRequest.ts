@@ -43,8 +43,7 @@ export function validatePostRequest(
       .map((issue) => issue.message)
       .join(", ");
 
-    const error = { status: 400, message };
-    return next(error);
+    return next({ status: 400, message });
   }
   return next();
 }

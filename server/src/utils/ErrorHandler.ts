@@ -7,7 +7,7 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  const errStatus = err.statusCode || 500;
+  const errStatus = err.status || 500;
   const errMsg = err.message || "Something went wrong";
 
   logError(errMsg, err.stack);
