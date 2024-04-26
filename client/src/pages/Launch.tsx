@@ -1,12 +1,7 @@
 import { Form } from "../components/Form";
 import Layout from "../components/Layout";
-import usePlanets from "../hooks/usePlanets";
-import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
 
 function Launches() {
-  const { submitLaunch, isError } = useSubmitLaunch();
-  const planets = usePlanets();
-
   return (
     <Layout>
       <div class="text-gray-100 border-emerald-400 h-auto border-[1px] border-dashed rounded-sm text-2xl p-8">
@@ -27,16 +22,10 @@ function Launches() {
             times Earth's value.
           </li>
         </ul>
-        <Form planets={planets} submitLaunch={submitLaunch} />
+        <Form />
       </div>
-      <div>{isError && <ErrorComponent />}</div>
     </Layout>
   );
-}
-
-function ErrorComponent() {
-  const { error } = useSubmitLaunch();
-  return <div>{error}</div>;
 }
 
 export default Launches;

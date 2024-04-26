@@ -1,13 +1,13 @@
 import { useMemo } from "preact/hooks";
+import usePlanets from "../hooks/usePlanets";
+import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
 import { Planet } from "../types";
 
-export function Form({
-  planets,
-  submitLaunch,
-}: {
-  planets: Array<Planet>;
-  submitLaunch: (e) => Promise<void>;
-}) {
+export function Form() {
+  const { isError, error, submitLaunch } = useSubmitLaunch();
+  const today = new Date().toISOString().split("T")[0];
+  const planets = usePlanets();
+
   const selectorBody = useMemo(() => {
     return planets?.map((planet: Planet) => (
       <option value={planet.planet} key={planet.planet}>
@@ -16,10 +16,10 @@ export function Form({
     ));
   }, [planets]);
 
-  const today = new Date().toISOString().split("T")[0];
   return (
     <form onSubmit={submitLaunch} className="space-y-6 mt-8">
-      <div class="">
+      {isError && <pre>{JSON.stringify(error, null, 2)}</pre>}
+      <div>
         <label htmlFor="launch" class="text-lg font-medium leading-6">
           Launch Date
         </label>
@@ -44,6 +44,7 @@ export function Form({
           type="text"
           name="mission-name"
           id="mission-name"
+          placeholder="Mission name goes here..."
           class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
         />
       </div>
@@ -58,7 +59,7 @@ export function Form({
           type="text"
           name="rocket-name"
           id="rocket-name"
-          defaultValue=""
+          placeholder="Rocket name goes here..."
           class="block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
         />
       </div>
