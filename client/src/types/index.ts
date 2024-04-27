@@ -36,3 +36,28 @@ export type RequestLaunch = {
 };
 
 export type Request = RequestSuccess | RequestFailed;
+
+export type StateType = {
+  date: string;
+  mission_name: string;
+  rocket_name: string;
+  planet: string;
+};
+
+export type ActionType =
+  | {
+      type: "CHANGE_DATE";
+      payload: string;
+    }
+  | {
+      type: "CHANGE_MISSION_NAME";
+      payload: string;
+    }
+  | {
+      type: "CHANGE_ROCKET_NAME";
+      payload: string;
+    }
+  | {
+      type: "CHANGE_PLANET_NAME";
+      payload: string;
+    };
