@@ -1,27 +1,56 @@
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { Planet } from "../types";
 
-import { httpGetPlanets } from "./requests";
+const URL = "http://localhost:3000";
 
 function usePlanets() {
-  const [planets, savePlanets] = useState<Array<Planet>>([]);
+  const [planets, savePlanets] = useState<Array<string>>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPlanetsError, setIsPlanetsError] = useState<boolean>(false);
+  const [planetError, setPlanetError] = useState<string | null>(null);
 
   const getPlanets = useCallback(async () => {
-    const result = await httpGetPlanets();
-    if (result.success === false) {
-      return;
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${URL}/planets`);
+
+      if (!response.ok) {
+        setIsPlanetsError(true);
+        setPlanetError(response.status.toString());
+        return;
+      }
+
+      const { data } = (await response.json()) as {
+        success: string;
+        data: Array<{
+          planet: string;
+        }>;
+      };
+      const result: Array<string> = [];
+
+      for (let i = 0; i < data.length; ++i) {
+        result.push(data[i].planet);
+      }
+
+      savePlanets(result);
+    } catch (e) {
+      setIsPlanetsError(true);
+      setPlanetError(e);
+    } finally {
+      setIsLoading(false);
     }
-    const fetchedPlanets = result.data.reduce((acc, planet) => {
-      acc.push(planet["planet"]);
-      return acc;
-    }, []);
-    savePlanets(fetchedPlanets);
   }, []);
 
   useEffect(() => {
     getPlanets();
   }, [getPlanets]);
-  return planets;
+
+  return {
+    planets,
+    isLoading,
+    isPlanetsError,
+    planetError,
+  };
 }
 
 export default usePlanets;

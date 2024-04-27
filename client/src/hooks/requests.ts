@@ -1,13 +1,4 @@
-import { Launch, Planet, RequestLaunch, SubmitLaunch } from "../types";
-
-const URL = "http://localhost:3000";
-
-async function httpGetPlanets() {
-  const response = await fetch(`${URL}/planets`);
-  const result = (await response.json()) as Request;
-
-  return result;
-}
+import { Launch, RequestLaunch } from "../types";
 
 async function httpGetLaunches() {
   const response = await fetch(`${URL}/launches`);
@@ -17,4 +8,4 @@ async function httpGetLaunches() {
   );
 }
 
-export { httpGetPlanets, httpGetLaunches };
+export { httpGetLaunches };

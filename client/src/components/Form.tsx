@@ -1,20 +1,37 @@
-import { useMemo } from "preact/hooks";
+import { useMemo, useReducer } from "preact/hooks";
 import usePlanets from "../hooks/usePlanets";
 import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
 import { Planet } from "../types";
 
+function reducer(state, action) {}
+
 export function Form() {
   const { isError, error, submitLaunch } = useSubmitLaunch();
+  const { planets, isPlanetsError, isLoading, planetError } = usePlanets();
   const today = new Date().toISOString().split("T")[0];
-  const planets = usePlanets();
 
   const selectorBody = useMemo(() => {
-    return planets?.map((planet: Planet) => (
-      <option value={planet.planet} key={planet.planet}>
-        {planet}
-      </option>
-    ));
+    if (planets.length) {
+      return planets.map((planet) => (
+        <option value={planet} key={planet}>
+          {planet}
+        </option>
+      ));
+    }
+    return [];
   }, [planets]);
+
+  const initialState = {
+    date: today,
+    mission_name: "",
+    rocket_name: "",
+    planet: planets.length ? planets[0] : "",
+  };
+
+  const [formState, dispatch] = useReducer<typeof initialState, any>(
+    reducer,
+    initialState,
+  );
 
   return (
     <form onSubmit={submitLaunch} className="space-y-6 mt-8">
@@ -29,7 +46,7 @@ export function Form() {
           type="date"
           name="launch-date"
           id="launch-date"
-          defaultValue={today}
+          defaultValue={formState.date}
           class="mt-2 block rounded-sm py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
         />
       </div>
@@ -45,6 +62,7 @@ export function Form() {
           name="mission-name"
           id="mission-name"
           placeholder="Mission name goes here..."
+          value={formState.date}
           class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
         />
       </div>
