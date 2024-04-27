@@ -1,4 +1,5 @@
 import { useState } from "preact/hooks";
+import { StateType } from "../types";
 import useLaunches from "./useLaunches";
 
 const URL = "http://localhost:3000";
@@ -10,15 +11,7 @@ export function useSubmitLaunch() {
 
   const { getLaunches } = useLaunches();
 
-  const submitLaunch = async (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    /* @ts-expect-error */
-    const launchDate = new Date(data.get("launch-date")).toJSON();
-    const mission = data.get("mission-name");
-    const rocket = data.get("rocket-name");
-    const destination = data.get("planet-selector");
-
+  const submitLaunch = async (data: StateType) => {
     try {
       setIsLoading(true);
       const res = await fetch(`${URL}/launches`, {
@@ -27,10 +20,10 @@ export function useSubmitLaunch() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          launchDate,
-          mission,
-          rocket,
-          destination,
+          launchDate: data.date,
+          mission: data.mission_name,
+          rocket: data.rocket_name,
+          destination: data.planet,
         }),
       });
 

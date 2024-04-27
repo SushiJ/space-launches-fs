@@ -1,14 +1,55 @@
 import { useMemo, useReducer } from "preact/hooks";
+import { JSXInternal } from "preact/src/jsx";
 import usePlanets from "../hooks/usePlanets";
 import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
-import { Planet } from "../types";
+import { ActionType, StateType } from "../types";
 
-function reducer(state, action) {}
+function reducer(state: StateType, action: ActionType) {
+  switch (action.type) {
+    case "CHANGE_DATE": {
+      console.info(action.payload);
+      return {
+        ...state,
+        date: action.payload,
+      };
+    }
+    case "CHANGE_MISSION_NAME": {
+      return {
+        ...state,
+        mission_name: action.payload,
+      };
+    }
+    case "CHANGE_ROCKET_NAME": {
+      return {
+        ...state,
+        rocket_name: action.payload,
+      };
+    }
+    case "CHANGE_PLANET_NAME": {
+      return {
+        ...state,
+        planet: action.payload,
+      };
+    }
+    default: {
+      return state;
+    }
+  }
+}
 
 export function Form() {
   const { isError, error, submitLaunch } = useSubmitLaunch();
   const { planets, isPlanetsError, isLoading, planetError } = usePlanets();
+
   const today = new Date().toISOString().split("T")[0];
+  const initialState = {
+    date: today,
+    mission_name: "",
+    rocket_name: "",
+    planet: planets.length > 0 ? planets[0] : "",
+  };
+
+  const [formState, dispatch] = useReducer(reducer, initialState);
 
   const selectorBody = useMemo(() => {
     if (planets.length) {
@@ -21,20 +62,13 @@ export function Form() {
     return [];
   }, [planets]);
 
-  const initialState = {
-    date: today,
-    mission_name: "",
-    rocket_name: "",
-    planet: planets.length ? planets[0] : "",
-  };
-
-  const [formState, dispatch] = useReducer<typeof initialState, any>(
-    reducer,
-    initialState,
-  );
+  function handleSubmit(e: JSXInternal.TargetedEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log(formState);
+  }
 
   return (
-    <form onSubmit={submitLaunch} className="space-y-6 mt-8">
+    <form onSubmit={handleSubmit} className="space-y-6 mt-8">
       {isError && <pre>{JSON.stringify(error, null, 2)}</pre>}
       <div>
         <label htmlFor="launch" class="text-lg font-medium leading-6">
@@ -48,6 +82,9 @@ export function Form() {
           id="launch-date"
           defaultValue={formState.date}
           class="mt-2 block rounded-sm py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
+          onChange={(e) =>
+            dispatch({ type: "CHANGE_DATE", payload: e.currentTarget.value })
+          }
         />
       </div>
       <div class="">
@@ -62,8 +99,14 @@ export function Form() {
           name="mission-name"
           id="mission-name"
           placeholder="Mission name goes here..."
-          value={formState.date}
+          value={formState.mission_name}
           class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
+          onChange={(e) =>
+            dispatch({
+              type: "CHANGE_MISSION_NAME",
+              payload: e.currentTarget.value,
+            })
+          }
         />
       </div>
       <div class="">
@@ -77,8 +120,15 @@ export function Form() {
           type="text"
           name="rocket-name"
           id="rocket-name"
+          value={formState.rocket_name}
           placeholder="Rocket name goes here..."
           class="block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
+          onChange={(e) =>
+            dispatch({
+              type: "CHANGE_ROCKET_NAME",
+              payload: e.currentTarget.value,
+            })
+          }
         />
       </div>
       <div class="">
@@ -92,6 +142,13 @@ export function Form() {
           id="planet-selector"
           name="planet-selector"
           class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 focus:ring-2 focus:ring-emerald-400 text-md leading-6"
+          defaultValue={formState.planet}
+          onChange={(e) =>
+            dispatch({
+              type: "CHANGE_PLANET_NAME",
+              payload: e.currentTarget.value,
+            })
+          }
         >
           {selectorBody}
         </select>
