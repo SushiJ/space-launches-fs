@@ -1,13 +1,15 @@
-import { Request, Response } from "express";
+import { type NextFunction, type Request, type Response } from "express";
 import planets from "../schema/planets";
 
-export function getAllPlanets(_req: Request, res: Response) {
-  planets
-    .find({}, { _id: 0, __v: 0 })
-    .then((data) => {
-      return res.status(200).json({ success: true, data });
-    })
-    .catch((e) => {
-      return res.status(500).json({ success: false, error: e });
-    });
+export async function getAllPlanets(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const result = await planets.find({}, { _id: 0, __v: 0 });
+    res.status(200).json({ success: true, data: result });
+  } catch (e) {
+    next({ status: 500, message: e });
+  }
 }
