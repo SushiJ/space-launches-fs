@@ -4,6 +4,8 @@ import usePlanets from "../hooks/usePlanets";
 import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
 import { ActionType, StateType } from "../types";
 
+// TODO: Look into breaking this reducer into smaller reducers
+// { ERROR_REDUCER, CLEAR_STATE, CHANGE_REDUCER}
 function reducer(state: StateType, action: ActionType) {
   switch (action.type) {
     case "CHANGE_DATE": {
@@ -31,6 +33,83 @@ function reducer(state: StateType, action: ActionType) {
         planet: action.payload,
       };
     }
+    case "SET_ERROR_MISSION_NAME": {
+      return {
+        ...state,
+        errors: {
+          ...state.errors,
+          mission_name: {
+            message: action.payload,
+          },
+        },
+      };
+    }
+    case "SET_ERROR_ROCKET_NAME": {
+      return {
+        ...state,
+        errors: {
+          ...state.errors,
+          rocket_name: {
+            message: action.payload,
+          },
+        },
+      };
+    }
+    case "SET_ERROR_PLANET_NAME": {
+      return {
+        ...state,
+        errors: {
+          ...state.errors,
+          planet: {
+            message: action.payload,
+          },
+        },
+      };
+    }
+    case "SET_ERROR_PLANET_NAME": {
+      return {
+        ...state,
+        errors: {
+          ...state.errors,
+          planet: {
+            message: action.payload,
+          },
+        },
+      };
+    }
+    case "CLEAR_ERROR_PLANET_NAME_STATE": {
+      return {
+        ...state,
+        errors: {
+          ...state.errors,
+          planet: {
+            message: "",
+          },
+        },
+      };
+    }
+    case "CLEAR_ERROR_MISSION_NAME_STATE": {
+      return {
+        ...state,
+        errors: {
+          ...state.errors,
+          mission_name: {
+            message: "",
+          },
+        },
+      };
+    }
+    case "CLEAR_ERROR_ROCKET_NAME_STATE": {
+      return {
+        ...state,
+        errors: {
+          ...state.errors,
+          rocket_name: {
+            message: "",
+          },
+        },
+      };
+    }
     default: {
       return state;
     }
@@ -42,11 +121,25 @@ export function Form() {
   const { planets, isPlanetsError, isLoading, planetError } = usePlanets();
 
   const today = new Date().toISOString().split("T")[0];
+
+  const errors = {
+    mission_name: {
+      message: "",
+    },
+    rocket_name: {
+      message: "",
+    },
+    planet: {
+      message: "",
+    },
+  };
+
   const initialState = {
     date: today,
     mission_name: "",
     rocket_name: "",
     planet: planets.length > 0 ? planets[0] : "",
+    errors: errors,
   };
 
   const [formState, dispatch] = useReducer(reducer, initialState);
@@ -54,9 +147,11 @@ export function Form() {
   const selectorBody = useMemo(() => {
     if (planets.length) {
       return planets.map((planet) => (
-        <option value={planet} key={planet}>
-          {planet}
-        </option>
+        <>
+          <option value={planet} key={planet}>
+            {planet}
+          </option>
+        </>
       ));
     }
     return [];
@@ -64,11 +159,34 @@ export function Form() {
 
   function handleSubmit(e: JSXInternal.TargetedEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!formState.mission_name) {
+      dispatch({
+        type: "SET_ERROR_MISSION_NAME",
+        payload: "Select a planet to launch",
+      });
+      console.log(formState.mission_name);
+    }
+    if (!formState.rocket_name) {
+      dispatch({
+        type: "SET_ERROR_ROCKET_NAME",
+        payload: "Rocket name is required",
+      });
+      console.log(formState.rocket_name);
+    }
+    if (!formState.planet) {
+      dispatch({
+        type: "SET_ERROR_PLANET_NAME",
+        payload: "Select a planet to launch",
+      });
+      console.log(formState.planet);
+    }
+    // TODO: HANDLE submit
     console.log(formState);
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+      {/* TODO: Add fieldset element for bluring the form  */}
       {isError && <pre>{JSON.stringify(error, null, 2)}</pre>}
       <div>
         <label htmlFor="launch" class="text-lg font-medium leading-6">
@@ -107,7 +225,15 @@ export function Form() {
               payload: e.currentTarget.value,
             })
           }
+          onBlur={(e) => {
+            if (e.currentTarget.value !== "") {
+              dispatch({ type: "CLEAR_ERROR_MISSION_NAME_STATE" });
+            }
+          }}
         />
+        <div class="text-sm text-red-400 pt-2" onBlur={() => {}}>
+          {formState.errors?.mission_name.message}
+        </div>
       </div>
       <div class="">
         <label
@@ -129,7 +255,15 @@ export function Form() {
               payload: e.currentTarget.value,
             })
           }
+          onBlur={(e) => {
+            if (e.currentTarget.value !== "") {
+              dispatch({ type: "CLEAR_ERROR_ROCKET_NAME_STATE" });
+            }
+          }}
         />
+        <div class="text-sm text-red-400 pt-2" onBlur={() => {}}>
+          {formState.errors?.rocket_name.message}
+        </div>
       </div>
       <div class="">
         <label
@@ -142,16 +276,26 @@ export function Form() {
           id="planet-selector"
           name="planet-selector"
           class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 focus:ring-2 focus:ring-emerald-400 text-md leading-6"
-          defaultValue={formState.planet}
           onChange={(e) =>
             dispatch({
               type: "CHANGE_PLANET_NAME",
               payload: e.currentTarget.value,
             })
           }
+          onBlur={(e) => {
+            if (e.currentTarget.value !== "") {
+              dispatch({ type: "CLEAR_ERROR_PLANET_NAME_STATE" });
+            }
+          }}
         >
+          <option value="" selected disabled>
+            Choose from listed planets here...
+          </option>
           {selectorBody}
         </select>
+        <div class="text-sm text-red-400 pt-2">
+          {formState.errors?.planet.message}
+        </div>
       </div>
       <div class="">
         <button
@@ -161,6 +305,7 @@ export function Form() {
         >
           Save
         </button>
+        {JSON.stringify(formState.errors, null, 2)}
       </div>
     </form>
   );

@@ -42,6 +42,17 @@ export type StateType = {
   mission_name: string;
   rocket_name: string;
   planet: string;
+  errors?: {
+    mission_name: {
+      message: string;
+    };
+    rocket_name: {
+      message: string;
+    };
+    planet: {
+      message: string;
+    };
+  };
 };
 
 export type ActionType =
@@ -60,4 +71,25 @@ export type ActionType =
   | {
       type: "CHANGE_PLANET_NAME";
       payload: string;
+    }
+  | {
+      type: "SET_ERROR_MISSION_NAME";
+      payload: string;
+    }
+  | {
+      type: "SET_ERROR_ROCKET_NAME";
+      payload: string;
+    }
+  | {
+      type: "SET_ERROR_PLANET_NAME";
+      payload: string;
+    }
+  | {
+      type: "CLEAR_ERROR_PLANET_NAME_STATE";
+    }
+  | {
+      type: "CLEAR_ERROR_MISSION_NAME_STATE";
+    }
+  | {
+      type: "CLEAR_ERROR_ROCKET_NAME_STATE";
     };
