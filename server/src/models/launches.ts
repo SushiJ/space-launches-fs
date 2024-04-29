@@ -28,7 +28,7 @@ export class Launches {
     await this.saveLaunch(newLaunch);
   }
 
-  async getLatestFlightNumber(): Promise<number> {
+  private async getLatestFlightNumber(): Promise<number> {
     const latestLaunch = await launchesModel.findOne().sort("-flightNumber");
 
     if (!latestLaunch) {
@@ -36,11 +36,13 @@ export class Launches {
     }
     return latestLaunch.flightNumber;
   }
-  async findLaunchesById(id: number) {
+
+  public async findLaunchesById(id: number) {
     return await launchesModel.findOne({
       flightNumber: id,
     });
   }
+
   async saveLaunch(launch: Launch) {
     await launchesModel.findOneAndUpdate(
       {
@@ -68,6 +70,7 @@ export class Launches {
   async findLaunch(filter: any) {
     return await launchesModel.findOne(filter);
   }
+
   async loadSpaceXData() {
     const firstLaunch = await this.findLaunch({
       flightNumber: 1,

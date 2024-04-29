@@ -3,13 +3,14 @@ import path from "path";
 import { parse } from "csv-parse";
 import { PlanetData } from "../types";
 import planets from "../schema/planets";
+import { logError, logInfo } from "../utils/colorLogs";
 
 const CSV_FILE = path.join(__dirname, "../../", "data", "kep_data.csv");
 
 export class PlanetsDatabase {
   // csv can be downloaded from https://exoplanetarchive.ipac.caltech.edu/docs/data.html
   // Download the KOI table
-  planetIsHabitable(planet: PlanetData) {
+  private planetIsHabitable(planet: PlanetData) {
     return (
       planet["koi_disposition"] === "CONFIRMED" &&
       parseInt(planet["koi_insol"]) > 0.36 &&
@@ -18,7 +19,7 @@ export class PlanetsDatabase {
     );
   }
 
-  async savePlanet(data: PlanetData) {
+  private async savePlanet(data: PlanetData) {
     try {
       await planets.updateOne(
         {
@@ -31,12 +32,12 @@ export class PlanetsDatabase {
           upsert: true,
         },
       );
-    } catch (e) {
-      console.error("Unable to save the planet: ", e);
+    } catch (e: any) {
+      logError("Unable to save the planet: ", e);
     }
   }
 
-  parseCsv() {
+  async parseCsv() {
     return new Promise<void>((resolve, reject) => {
       fs.createReadStream(CSV_FILE)
         .pipe(
@@ -54,8 +55,8 @@ export class PlanetsDatabase {
         .on("end", () => {
           planets
             .find({})
-            .then((data) => console.log(data.length))
-            .catch((e) => console.log(e));
+            .then((data) => logInfo(data.length.toString()))
+            .catch((e) => logError(e));
           resolve();
         });
     });
