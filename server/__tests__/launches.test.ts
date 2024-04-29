@@ -1,9 +1,12 @@
 import request from "supertest";
 import app from "../src/app";
-import connectDB from "../src/utils/dbConnect";
+import mongoose from "mongoose";
 
 describe("Launches API", () => {
-  beforeAll(async () => await connectDB());
+  const MONGO_URL =
+    "mongodb://127.0.0.1:27017/nasa?retryWrites=true&w=majority";
+  beforeAll(async () => await mongoose.connect(MONGO_URL));
+  afterAll(async () => await mongoose.disconnect());
   describe("Test GET /launches", () => {
     test("It should respond with 200 success", async () => {
       await request(app)
@@ -50,9 +53,12 @@ describe("Launches API", () => {
 
       expect(response.body).toStrictEqual({
         success: false,
-        error: "Launch date is required",
+        message: "Launch date is required",
+        stack: {},
+        status: 400,
       });
     });
+
     test("It should catch invalid dates and respond with 400 bad request", async () => {
       const response = await request(app)
         .post("/launches")
@@ -67,7 +73,9 @@ describe("Launches API", () => {
 
       expect(response.body).toStrictEqual({
         success: false,
-        error: "Launch Date is not a valid date",
+        message: "Launch Date is not a valid date",
+        stack: {},
+        status: 400,
       });
     });
   });

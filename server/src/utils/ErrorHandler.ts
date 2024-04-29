@@ -10,7 +10,9 @@ export const errorHandler = (
   const errStatus = err.status || 500;
   const errMsg = err.message || "Something went wrong";
 
-  logError(errMsg, err.stack);
+  if (process.env.NODE_ENV === "production") {
+    logError(errMsg, err.stack);
+  }
 
   res.status(errStatus).json({
     success: false,
