@@ -3,7 +3,8 @@
 - Form validation
 - Table pagination
 
-Toast component
-table component
+- Styling, Reponsive and better color for form and stuff
+  Toast component
+  table component
 
 Seeding functions
