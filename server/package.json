@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "export NODE_ENV='test' && jest --detectOpenHandles",
     "dev": "nodemon",
     "seed": "tsx ./src/utils/seedDatabase.ts",
     "build": "rm -rdf dist && swc ./src -d dist"

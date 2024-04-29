@@ -1,14 +1,14 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-// import connectDB from "./utils/dbConnect";
+import connectDB from "./utils/dbConnect";
 import { errorHandler } from "./utils/ErrorHandler";
-// import { logError } from "./utils/colorLogs";
+import { logError } from "./utils/colorLogs";
 import planetsRouter from "./routes/planets";
 import launchesRouter from "./routes/launches";
 
 const app = express();
-// const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
@@ -24,9 +24,11 @@ app.use(launchesRouter);
 
 app.use(errorHandler);
 
-// app.listen(PORT, async () => {
-//   console.log("Server up", PORT);
-//   await connectDB().catch((e) => logError("Couldn't connect to DB", e));
-// });
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, async () => {
+    console.log("Server up", PORT);
+    await connectDB().catch((e) => logError("Couldn't connect to DB", e));
+  });
+}
 
 export default app;
