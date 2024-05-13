@@ -4,38 +4,25 @@ import { Logo } from "./Logo";
 
 function Navbar() {
   return (
-    <header className="bg-gray-900 bg-transparent text-gray-100">
-      <nav className="flex items-center py-8 justify-between bg-transparent">
-        <Link
-          className="flex items-center space-x-4 text-2xl hover:text-emerald-400"
-          href="/"
-        >
+    <header className="text-xs text-mars-base md:text-sm">
+      <nav className="flex items-center justify-between lg:py-8">
+        <Link className="flex items-center space-x-4" href="/">
           <Logo />
-          <h1 class="text-2xl ">C.E.</h1>
         </Link>
-        <div className="text-2xl flex items-center space-x-4">
-          <Link
-            className="flex items-center hover:text-emerald-400"
-            href="/launches"
-          >
+        <div className="flex items-center space-x-4">
+          <Link className="flex items-center" href="/launches">
             <span className="mx-1">
               <LaunchIcon />
             </span>
             Launch
           </Link>
-          <Link
-            className="flex items-center hover:text-emerald-400"
-            href="/upcoming"
-          >
+          <Link className="flex items-center" href="/upcoming">
             <span className="mx-1">
               <UpcomingIcon />
             </span>
             Upcoming
           </Link>
-          <Link
-            className="flex items-center hover:text-emerald-400"
-            href="/history"
-          >
+          <Link className="flex items-center" href="/history">
             <span className="mx-1">
               <HistoryIcon />
             </span>

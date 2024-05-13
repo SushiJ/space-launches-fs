@@ -8,8 +8,9 @@ function HistoryPage() {
   const tableBody = useMemo(() => {
     return launches
       .filter((launch: Launch) => !launch.upcoming)
+      .reverse()
       .map((launch: Launch) => (
-        <tr key={String(launch.flightNumber)} class="">
+        <tr key={String(launch.flightNumber)} class="text-sm">
           <td class="">{launch.flightNumber}</td>
           <td>{new Date(launch.launchDate).toDateString()}</td>
           <td>{launch.mission}</td>
@@ -20,23 +21,26 @@ function HistoryPage() {
   }, [launches]);
   return (
     <Layout>
-      <div class="text-gray-100 border-emerald-400 border-[1px] rounded-sm text-xl p-8">
-        <p class="mt-4">
+      <div class="text-sm">
+        <p class="">
           History of mission launchers including SpaceX launches starting from
           the year 2006.
         </p>
-        <table class="mt-2 w-full table-auto text-center">
-          <thead class="border-gray-400 border-b-[1px]">
-            <tr class="pb-4 mb-12">
-              <th class="">No.</th>
-              <th>Date</th>
-              <th>Misson</th>
-              <th>Rocket</th>
-              <th>Customers</th>
-            </tr>
-          </thead>
-          <tbody>{tableBody}</tbody>
-        </table>
+        <div class="mt-2 max-h-[40rem] overflow-y-auto">
+          <table class="table-auto text-center text-mars-base shadow-sm">
+            <thead class="border-b-[1px] border-b-mars-light pb-4">
+              <tr class="text-xs">
+                <th>&nbsp;</th>
+                <th>No.</th>
+                <th>Date</th>
+                <th>Misson</th>
+                <th>Rocket</th>
+                <th>Destination</th>
+              </tr>
+            </thead>
+            <tbody>{tableBody}</tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );

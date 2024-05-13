@@ -3,7 +3,7 @@ type LogoProps = {
   height?: string;
 };
 
-export function Logo({ width = "75", height = "75" }: LogoProps) {
+export function Logo({ width = "25", height = "25" }: LogoProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

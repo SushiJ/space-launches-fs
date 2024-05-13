@@ -3,14 +3,16 @@ import Layout from "../components/Layout";
 function Home() {
   return (
     <Layout>
-      <div class="flex flex-col items-center mt-28">
-        <div class="text-2xl text-gray-100">
-          <h1 class="my-6 text-center text-xl">Celestial Explorer</h1>
-          <h1 class="pt-4 mt-4 max-w-lg text-center text-4xl bg-gradient-to-br from-emerald-400 to-gray-100 bg-clip-text text-transparent">
+      <div class="flex flex-col items-center">
+        <div>
+          <h1 class="text-center text-2xl text-mars-base">
+            Celestial Explorer
+          </h1>
+          <h1 class="prose mx-10 mt-4 max-w-lg bg-gradient-to-br from-mars-base/90 via-mars-light to-mars-gray/80 bg-clip-text pt-4 text-center text-xl text-transparent lg:mx-auto">
             Your Virtual Space Launch Control Center
           </h1>
         </div>
-        <p class="max-w-4xl text-gray-100 mt-14 py-10 text-2xl text-center">
+        <p class="prose mt-8 px-4 text-center text-mars-base/80 lg:mt-14 lg:py-10">
           A web application designed to provide users a tool for tracking and
           managing space launches. This application keeps you informed about
           past private launches & past SpaceX launches and gives you the ability
@@ -18,9 +20,16 @@ function Home() {
         </p>
         <a
           href="/launches"
-          class="bg-gradient-to-br from-emerald-400 to-gray-100 bg-clip-text text-transparent p-4 rounded-sm text-xl border-emerald-400 border-2 my-16"
+          class="mt-8 rounded-sm border-2 border-mars-base/20 bg-gradient-to-br from-mars-base/90 via-mars-light to-mars-gray/80 bg-clip-text p-4 text-xl text-transparent lg:my-16"
         >
-          Schedule a launch
+          <div class="back flex h-full w-full items-center justify-center">
+            <p
+              class="
+             bg-gradient-to-br from-mars-base/90 via-mars-light to-mars-gray/80 bg-clip-text text-sm text-transparent"
+            >
+              Schedule a launch
+            </p>
+          </div>
         </a>
       </div>
     </Layout>

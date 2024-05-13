@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { Launch, RequestLaunch } from "../types/";
 
+const URL = "http://localhost:3000";
+
 function useLaunches() {
   const [launches, setLaunches] = useState<Array<Launch> | []>([]);
   const [error, setError] = useState<string | null>(null);
@@ -13,6 +15,7 @@ function useLaunches() {
       const response = await fetch(`${URL}/launches`);
       const result = (await response.json()) as RequestLaunch;
       setLaunches(result.data);
+      console.log(result.data);
     } catch (e) {
       setIsError(true);
       setError(e);
@@ -23,7 +26,7 @@ function useLaunches() {
 
   useEffect(() => {
     getLaunches();
-  }, [getLaunches]);
+  }, []);
 
   return {
     getLaunches,

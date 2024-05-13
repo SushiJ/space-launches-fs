@@ -3,9 +3,11 @@ import Footer from "./Footer";
 
 function Layout({ children }: { children: any }) {
   return (
-    <div className="bg-gray-900 bg-transparent h-screen flex flex-col max-w-6xl mx-auto">
-      <Navbar />
-      <div className="max-w-6xl mx-auto pb-4 flex-1">{children}</div>
+    <div className="mx-auto h-[90vh] bg-mars-lighter/50 antialiased selection:bg-mars-base selection:text-mars-lighter">
+      <div className="mx-auto flex h-full max-w-xl flex-col p-4">
+        <Navbar />
+        <div className="mx-auto flex flex-1 items-center pb-4">{children}</div>
+      </div>
       <Footer />
     </div>
   );

@@ -1,8 +1,8 @@
 export function UpcomingIcon() {
   return (
     <svg
-      width="30"
-      height="30"
+      width="25"
+      height="25"
       viewBox="0 0 15 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -20,8 +20,8 @@ export function UpcomingIcon() {
 export function HistoryIcon() {
   return (
     <svg
-      width="30"
-      height="30"
+      width="25"
+      height="25"
       viewBox="0 0 15 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -38,8 +38,8 @@ export function HistoryIcon() {
 export function LaunchIcon() {
   return (
     <svg
-      width="30"
-      height="30"
+      width="25"
+      height="25"
       viewBox="0 0 15 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

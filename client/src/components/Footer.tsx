@@ -5,20 +5,19 @@ import { Logo } from "./Logo";
 function Footer() {
   return (
     <>
-      <hr class="border-emerald-400 border-[1px] " />
-      <nav class="flex flex-col items-center pt-4 pb-1 bg-transparent text-emerald-400">
+      <nav class="flex flex-col items-center bg-mars-base pt-4 pb-1 text-mars-lighter">
         <Link class="flex flex-col items-center" href="/">
           <Logo height="50" width="50" />
-          <p class="py-2 text-lg">Celestial Explorer</p>
+          <p class="py-2 text-sm lg:text-lg">Celestial Explorer</p>
         </Link>
-        <div class="text-sm space-x-6 pt-2 text-white">
-          <Link class="hover:text-emerald-400" href="/launches">
+        <div class="space-x-6 pt-2 text-sm">
+          <Link class="" href="/launches">
             Launch
           </Link>
-          <Link class="hover:text-emerald-400" href="/upcoming">
+          <Link class="" href="/upcoming">
             Upcoming
           </Link>
-          <Link class="hover:text-emerald-400" href="/history">
+          <Link class="" href="/history">
             History
           </Link>
         </div>

@@ -66,17 +66,6 @@ function reducer(state: StateType, action: ActionType) {
         },
       };
     }
-    case "SET_ERROR_PLANET_NAME": {
-      return {
-        ...state,
-        errors: {
-          ...state.errors,
-          planet: {
-            message: action.payload,
-          },
-        },
-      };
-    }
     case "CLEAR_ERROR_PLANET_NAME_STATE": {
       return {
         ...state,
@@ -185,31 +174,64 @@ export function Form() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+    <form onSubmit={handleSubmit} className="mt-8 text-sm">
       {/* TODO: Add fieldset element for bluring the form  */}
       {isError && <pre>{JSON.stringify(error, null, 2)}</pre>}
-      <div>
-        <label htmlFor="launch" class="text-lg font-medium leading-6">
-          Launch Date
-        </label>
-        <input
-          min={today}
-          max="2040-12-31"
-          type="date"
-          name="launch-date"
-          id="launch-date"
-          defaultValue={formState.date}
-          class="mt-2 block rounded-sm py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
-          onChange={(e) =>
-            dispatch({ type: "CHANGE_DATE", payload: e.currentTarget.value })
-          }
-        />
+      <div class="flex space-x-2">
+        <div>
+          <label htmlFor="launch" class="font-medium leading-6">
+            Launch Date
+          </label>
+          <input
+            min={today}
+            max="2040-12-31"
+            type="date"
+            name="launch-date"
+            id="launch-date"
+            defaultValue={formState.date}
+            class="block rounded-sm border-none py-1.5 leading-6 shadow-sm focus:ring-2 focus:ring-mars-base"
+            onChange={(e) =>
+              dispatch({ type: "CHANGE_DATE", payload: e.currentTarget.value })
+            }
+          />
+        </div>
+        <div>
+          <label htmlFor="planet-selector" class="block font-medium leading-6">
+            Destiantion Exoplanet
+          </label>
+          <select
+            id="planet-selector"
+            name="planet-selector"
+            class="block w-full rounded-sm border-none py-1.5 leading-6 shadow-sm focus:ring-2 focus:ring-mars-base"
+            onChange={(e) =>
+              dispatch({
+                type: "CHANGE_PLANET_NAME",
+                payload: e.currentTarget.value,
+              })
+            }
+            onBlur={(e) => {
+              if (e.currentTarget.value !== "") {
+                dispatch({ type: "CLEAR_ERROR_PLANET_NAME_STATE" });
+              }
+            }}
+          >
+            <option
+              value=""
+              selected
+              disabled
+              class="text-sm text-mars-base/75"
+            >
+              Choose from listed planets here...
+            </option>
+            {selectorBody}
+          </select>
+          <div class="pt-2 text-sm text-red-400">
+            {formState.errors?.planet.message}
+          </div>
+        </div>
       </div>
-      <div class="">
-        <label
-          htmlFor="mission-name"
-          class="block text-lg font-medium leading-6"
-        >
+      <div>
+        <label htmlFor="mission-name" class="block font-medium leading-6">
           Mission Name
         </label>
         <input
@@ -218,7 +240,7 @@ export function Form() {
           id="mission-name"
           placeholder="Mission name goes here..."
           value={formState.mission_name}
-          class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
+          class="block w-full rounded-sm border-0 py-1.5 leading-6 shadow-sm placeholder:text-mars-base/75 focus:ring-2 focus:ring-mars-base"
           onChange={(e) =>
             dispatch({
               type: "CHANGE_MISSION_NAME",
@@ -231,15 +253,12 @@ export function Form() {
             }
           }}
         />
-        <div class="text-sm text-red-400 pt-2" onBlur={() => {}}>
+        <div class="pt-2 text-sm text-red-400" onBlur={() => {}}>
           {formState.errors?.mission_name.message}
         </div>
       </div>
       <div class="">
-        <label
-          htmlFor="rocket-name"
-          class="block text-lg font-medium leading-6"
-        >
+        <label htmlFor="rocket-name" class="block font-medium leading-6">
           Rocket Name
         </label>
         <input
@@ -248,7 +267,7 @@ export function Form() {
           id="rocket-name"
           value={formState.rocket_name}
           placeholder="Rocket name goes here..."
-          class="block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-400 text-lg leading-6"
+          class="block w-full rounded-sm border-0 py-1.5 leading-tight shadow-sm placeholder:text-mars-base/75 focus:ring-2 focus:ring-mars-base "
           onChange={(e) =>
             dispatch({
               type: "CHANGE_ROCKET_NAME",
@@ -261,51 +280,19 @@ export function Form() {
             }
           }}
         />
-        <div class="text-sm text-red-400 pt-2" onBlur={() => {}}>
+        <div class="pt-2 text-sm text-red-400" onBlur={() => {}}>
           {formState.errors?.rocket_name.message}
         </div>
       </div>
-      <div class="">
-        <label
-          htmlFor="planet-selector"
-          class="block text-lg font-medium leading-6 "
-        >
-          Destiantion Exoplanet
-        </label>
-        <select
-          id="planet-selector"
-          name="planet-selector"
-          class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 focus:ring-2 focus:ring-emerald-400 text-md leading-6"
-          onChange={(e) =>
-            dispatch({
-              type: "CHANGE_PLANET_NAME",
-              payload: e.currentTarget.value,
-            })
-          }
-          onBlur={(e) => {
-            if (e.currentTarget.value !== "") {
-              dispatch({ type: "CLEAR_ERROR_PLANET_NAME_STATE" });
-            }
-          }}
-        >
-          <option value="" selected disabled>
-            Choose from listed planets here...
-          </option>
-          {selectorBody}
-        </select>
-        <div class="text-sm text-red-400 pt-2">
-          {formState.errors?.planet.message}
-        </div>
-      </div>
+      <div class=""></div>
       <div class="">
         <button
           type="submit"
-          class="text-sm hover:bg-emerald-200
-          bg-emerald-400 p-2 rounded-sm text-gray-900 mt-2 disabled:cursor-auto disabled:bg-emerald-300"
+          class="mt-4 w-full rounded-sm bg-mars-base px-1 py-2 text-sm font-semibold text-mars-lighter shadow-sm disabled:cursor-auto "
         >
           Save
         </button>
-        {JSON.stringify(formState.errors, null, 2)}
+        {/* {JSON.stringify(formState.errors, null, 2)} */}
       </div>
     </form>
   );

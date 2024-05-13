@@ -4,20 +4,20 @@ import Layout from "../components/Layout";
 function Launches() {
   return (
     <Layout>
-      <div class="text-gray-100 border-emerald-400 h-auto border-[1px] border-dashed rounded-sm text-2xl p-8">
+      <div class="md:text-md pt-8 text-sm text-mars-base">
         <h2>
           Schedule a mission launch for intersetellar travel to one of the
           Kepler Exoplanets.
         </h2>
-        <p className="my-8 text-xl">
+        <p className="">
           Only confimed planets matching the follwoing criteria are available
           for the earliest scheduled missions:
         </p>
-        <ul className="text-xl ml-4">
-          <li className="list-disc list-inside">
+        <ul className="ml-4">
+          <li className="list-inside list-disc">
             Planetary radius &lt; 1.6 times Earth's radius.
           </li>
-          <li className="list-disc list-inside">
+          <li className="list-inside list-disc">
             Effective stellar flux &gt; 0.36 times Earth's value and &lt; 1.11
             times Earth's value.
           </li>
