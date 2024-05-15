@@ -4,12 +4,9 @@ import { useAbortLaunches } from "../hooks/useAbortLaunch";
 import useLaunches from "../hooks/useLaunches";
 
 function UpcomingPage() {
-  const abortLaunch = useAbortLaunches();
+  const { abortLaunch } = useAbortLaunches();
   const { launches } = useLaunches();
   const tableBody = useMemo(() => {
-    if (launches.length === 0) {
-      return;
-    }
     return launches
       .filter((launch) => launch.upcoming)
       .reverse()
@@ -19,7 +16,11 @@ function UpcomingPage() {
             <td class="">
               <button
                 className=""
-                onClick={() => abortLaunch(launch.flightNumber)}
+                onClick={() => {
+                  abortLaunch(launch.flightNumber).then(() =>
+                    location.reload()
+                  );
+                }}
               >
                 ✖
               </button>
@@ -49,23 +50,25 @@ function UpcomingPage() {
           </span>
           aborts the mission
         </p>
-        <div class="mt-2 max-h-[40rem] overflow-y-auto rounded border-2 border-mars-base p-2">
-          <table class="table-auto text-center text-mars-base shadow-sm">
-            <thead class="border-b-[1px] border-b-mars-light pb-4">
-              <tr class="text-xs">
-                <th>&nbsp;</th>
-                <th>No.</th>
-                <th>Date</th>
-                <th>Misson</th>
-                <th>Rocket</th>
-                <th>Destination</th>
-              </tr>
-            </thead>
-            <tbody>{tableBody}</tbody>
-          </table>
-        </div>
-        {launches.length === 0 && (
+
+        {launches.length === 0 ? (
           <p class="pt-8 text-center">No upcoming launches found</p>
+        ) : (
+          <div class="mt-2 max-h-[40rem] overflow-y-auto rounded border-2 border-mars-base p-2">
+            <table class="table-auto text-center text-mars-base shadow-sm">
+              <thead class="border-b-[1px] border-b-mars-light pb-4">
+                <tr class="text-xs">
+                  <th>&nbsp;</th>
+                  <th>No.</th>
+                  <th>Date</th>
+                  <th>Misson</th>
+                  <th>Rocket</th>
+                  <th>Destination</th>
+                </tr>
+              </thead>
+              <tbody>{tableBody}</tbody>
+            </table>
+          </div>
         )}
       </div>
     </Layout>

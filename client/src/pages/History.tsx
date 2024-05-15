@@ -26,21 +26,25 @@ function HistoryPage() {
           History of mission launchers including SpaceX launches starting from
           the year 2006.
         </p>
-        <div class="mt-2 max-h-[40rem] overflow-y-auto rounded border-2 border-mars-base p-2">
-          <table class="table-auto text-center text-mars-base shadow-sm">
-            <thead class="border-b-[1px] border-b-mars-light pb-4">
-              <tr class="text-xs">
-                <th>&nbsp;</th>
-                <th>No.</th>
-                <th>Date</th>
-                <th>Misson</th>
-                <th>Rocket</th>
-                <th>Destination</th>
-              </tr>
-            </thead>
-            <tbody>{tableBody}</tbody>
-          </table>
-        </div>
+        {launches.length === 0 ? (
+          <p class="pt-8 text-center">No history found</p>
+        ) : (
+          <div class="mt-2 max-h-[40rem] overflow-y-auto scroll-smooth rounded border-2 border-mars-base p-2">
+            <table class="table-auto text-center text-mars-base shadow-sm">
+              <thead class="border-b-[1px] border-b-mars-light pb-4">
+                <tr class="text-xs">
+                  <th>&nbsp;</th>
+                  <th>No.</th>
+                  <th>Date</th>
+                  <th>Misson</th>
+                  <th>Rocket</th>
+                  <th>Destination</th>
+                </tr>
+              </thead>
+              <tbody>{tableBody}</tbody>
+            </table>
+          </div>
+        )}
       </div>
     </Layout>
   );

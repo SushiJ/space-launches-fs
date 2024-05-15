@@ -1,13 +1,15 @@
 import { useCallback, useState } from "preact/hooks";
 import useLaunches from "./useLaunches";
 
+const URL = "http://localhost:3000";
+
 export function useAbortLaunches() {
   // const [launches, setLaunches] = useState<Array<Launch> | []>([]);
   const [error, setError] = useState<string | null>(null);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { getLaunches, launches } = useLaunches();
+  const { launches } = useLaunches();
 
   const abortLaunch = useCallback(
     async (id: number) => {
@@ -16,9 +18,10 @@ export function useAbortLaunches() {
         const response = await fetch(`${URL}/launches/${id}`, {
           method: "DELETE",
         });
-        const result = await response.json();
 
-        await getLaunches();
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
       } catch (e) {
         setIsError(true);
         setError(e);
@@ -26,8 +29,13 @@ export function useAbortLaunches() {
         setIsLoading(false);
       }
     },
-    [launches],
+    [launches]
   );
 
-  return abortLaunch;
+  return {
+    abortLaunch,
+    error,
+    isLoading,
+    isError,
+  };
 }
