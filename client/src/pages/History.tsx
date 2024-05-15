@@ -26,7 +26,7 @@ function HistoryPage() {
           History of mission launchers including SpaceX launches starting from
           the year 2006.
         </p>
-        <div class="mt-2 max-h-[40rem] overflow-y-auto">
+        <div class="mt-2 max-h-[40rem] overflow-y-auto rounded border-2 border-mars-base p-2">
           <table class="table-auto text-center text-mars-base shadow-sm">
             <thead class="border-b-[1px] border-b-mars-light pb-4">
               <tr class="text-xs">
