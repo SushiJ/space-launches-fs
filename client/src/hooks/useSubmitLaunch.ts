@@ -20,7 +20,7 @@ export function useSubmitLaunch() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          launchDate: data.date,
+          launchDate: new Date(data.date).toISOString(),
           mission: data.mission_name,
           rocket: data.rocket_name,
           destination: data.planet,
@@ -28,12 +28,8 @@ export function useSubmitLaunch() {
       });
 
       if (!res.ok) {
-        setIsError(true);
         const error = await res.json();
-        setError(error.message);
-        setTimeout(() => {
-          setError(null);
-        }, 2000);
+        throw new Error(error.message);
       } else {
         await getLaunches();
       }

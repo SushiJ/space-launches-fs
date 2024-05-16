@@ -1,112 +1,16 @@
 import { useMemo, useReducer } from "preact/hooks";
 import { JSXInternal } from "preact/src/jsx";
+import reducer from "../feature/reducer";
 import usePlanets from "../hooks/usePlanets";
 import { useSubmitLaunch } from "../hooks/useSubmitLaunch";
-import { ActionType, StateType } from "../types";
-
-// TODO: Look into breaking this reducer into smaller reducers
-// { ERROR_REDUCER, CLEAR_STATE, CHANGE_REDUCER}
-function reducer(state: StateType, action: ActionType) {
-  switch (action.type) {
-    case "CHANGE_DATE": {
-      console.info(action.payload);
-      return {
-        ...state,
-        date: action.payload,
-      };
-    }
-    case "CHANGE_MISSION_NAME": {
-      return {
-        ...state,
-        mission_name: action.payload,
-      };
-    }
-    case "CHANGE_ROCKET_NAME": {
-      return {
-        ...state,
-        rocket_name: action.payload,
-      };
-    }
-    case "CHANGE_PLANET_NAME": {
-      return {
-        ...state,
-        planet: action.payload,
-      };
-    }
-    case "SET_ERROR_MISSION_NAME": {
-      return {
-        ...state,
-        errors: {
-          ...state.errors,
-          mission_name: {
-            message: action.payload,
-          },
-        },
-      };
-    }
-    case "SET_ERROR_ROCKET_NAME": {
-      return {
-        ...state,
-        errors: {
-          ...state.errors,
-          rocket_name: {
-            message: action.payload,
-          },
-        },
-      };
-    }
-    case "SET_ERROR_PLANET_NAME": {
-      return {
-        ...state,
-        errors: {
-          ...state.errors,
-          planet: {
-            message: action.payload,
-          },
-        },
-      };
-    }
-    case "CLEAR_ERROR_PLANET_NAME_STATE": {
-      return {
-        ...state,
-        errors: {
-          ...state.errors,
-          planet: {
-            message: "",
-          },
-        },
-      };
-    }
-    case "CLEAR_ERROR_MISSION_NAME_STATE": {
-      return {
-        ...state,
-        errors: {
-          ...state.errors,
-          mission_name: {
-            message: "",
-          },
-        },
-      };
-    }
-    case "CLEAR_ERROR_ROCKET_NAME_STATE": {
-      return {
-        ...state,
-        errors: {
-          ...state.errors,
-          rocket_name: {
-            message: "",
-          },
-        },
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-}
 
 export function Form() {
-  const { isError, error, submitLaunch } = useSubmitLaunch();
+  const {
+    isError,
+    error,
+    submitLaunch,
+    isLoading: isLoadingMutation,
+  } = useSubmitLaunch();
   const { planets, isPlanetsError, isLoading, planetError } = usePlanets();
 
   const today = new Date().toISOString().split("T")[0];
@@ -146,37 +50,41 @@ export function Form() {
     return [];
   }, [planets]);
 
-  function handleSubmit(e: JSXInternal.TargetedEvent<HTMLFormElement>) {
+  async function handleSubmit(e: JSXInternal.TargetedEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!formState.mission_name) {
       dispatch({
         type: "SET_ERROR_MISSION_NAME",
         payload: "Select a planet to launch",
       });
-      console.log(formState.mission_name);
     }
     if (!formState.rocket_name) {
       dispatch({
         type: "SET_ERROR_ROCKET_NAME",
         payload: "Rocket name is required",
       });
-      console.log(formState.rocket_name);
     }
     if (!formState.planet) {
       dispatch({
         type: "SET_ERROR_PLANET_NAME",
         payload: "Select a planet to launch",
       });
-      console.log(formState.planet);
     }
     // TODO: HANDLE submit
+    await submitLaunch(formState);
     console.log(formState);
   }
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 text-sm">
       {/* TODO: Add fieldset element for bluring the form  */}
-      {isError && <pre>{JSON.stringify(error, null, 2)}</pre>}
+      <p>
+        {isError ? (
+          <pre>
+            {JSON.stringify(error.toString().split(":")[1].trim(), null, 2)}
+          </pre>
+        ) : null}
+      </p>
       <div class="flex space-x-2">
         <div>
           <label htmlFor="launch" class="font-medium leading-6">
@@ -302,7 +210,8 @@ export function Form() {
       </div>
       <button
         type="submit"
-        class="mt-4 w-full rounded-sm bg-mars-base px-1 py-2 text-sm font-semibold text-mars-lighter shadow-sm disabled:cursor-auto "
+        class="mt-4 w-full rounded-sm bg-mars-base px-1 py-2 text-sm font-semibold text-mars-lighter shadow-sm hover:bg-mars-base/90 disabled:cursor-auto disabled:bg-mars-base/20"
+        disabled={isLoadingMutation}
       >
         Save
       </button>
