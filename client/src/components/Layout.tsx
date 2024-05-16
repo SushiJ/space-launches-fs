@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { Toaster } from "./Toast";
 
 function Layout({ children }: { children: any }) {
   return (
@@ -9,6 +10,7 @@ function Layout({ children }: { children: any }) {
         <div className="mx-auto flex flex-1 items-center pb-4">{children}</div>
       </div>
       <Footer />
+      {/* <Toaster /> */}
     </div>
   );
 }

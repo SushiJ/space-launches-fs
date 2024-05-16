@@ -1,10 +1,9 @@
-- Error handling in the API calls (client)
-- Error handling middleware (server)
-- Form validation
+- Error handling in the API calls (client, need toast comp for this, we'll see)
+- Error handling middleware (server, I did this I think with zod)
+- Form validation (Form validation is good to go, I think)
 - Table pagination
 
-- Styling, Reponsive and better color for form and stuff
-  Toast component
-  table component
+- Toast component (seems kinda tough, we'll see)
+- Table component
 
-Seeding functions
+- Seeding functions (TODO)
