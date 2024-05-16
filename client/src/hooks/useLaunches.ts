@@ -34,6 +34,7 @@ function useLaunches() {
     error,
     isLoading,
     isError,
+    setLaunches,
   };
 }
 

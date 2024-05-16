@@ -5,7 +5,15 @@ import useLaunches from "../hooks/useLaunches";
 
 function UpcomingPage() {
   const { abortLaunch } = useAbortLaunches();
-  const { launches } = useLaunches();
+  const { launches, setLaunches } = useLaunches();
+
+  function handleAbort(launch: (typeof launches)[0]) {
+    const newLaunches = launches.filter(
+      (l) => l.flightNumber !== launch.flightNumber
+    );
+    abortLaunch(launch.flightNumber).then(() => setLaunches(newLaunches));
+  }
+
   const tableBody = useMemo(() => {
     return launches
       .filter((launch) => launch.upcoming)
@@ -13,19 +21,10 @@ function UpcomingPage() {
       .map((launch) => {
         return (
           <tr class="text-sm" key={String(launch.flightNumber)}>
-            <td class="">
-              <button
-                className=""
-                onClick={() => {
-                  abortLaunch(launch.flightNumber).then(() =>
-                    location.reload()
-                  );
-                }}
-              >
-                ✖
-              </button>
+            <td>
+              <button onClick={() => handleAbort(launch)}>✖</button>
             </td>
-            <td class="">{launch.flightNumber}</td>
+            <td>{launch.flightNumber}</td>
             <td>{new Date(String(launch.launchDate)).toDateString()}</td>
             <td>{launch.mission}</td>
             <td>{launch.rocket}</td>
